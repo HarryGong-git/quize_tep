@@ -1,0 +1,121 @@
+--- PAGE 1 ---
+ER DIAGRAM (ENTITY-RELATIONSHIP) 
+1 
+
+--- PAGE 2 ---
+ER Diagram (ERD) 
+• ER model: entity–relationship model 
+• Describes interrelated things of interest in a specific domain 
+• Composed of entities (which classify the things of interest) and relationships that can exist 
+between instances of those entities 
+• Very useful for: 
+– Data modelling, design new database 
+– Data understanding, figure out connection between tables in existing database 
+– Communication tool, align understanding of the domain 
+2 
+
+--- PAGE 3 ---
+Typical Notations 
+• Rectangle: entity 
+• Diamond: relationship 
+• Oval: attribute 
+• Underscore: key 
+3 
+
+--- PAGE 4 ---
+4 
+
+
+--- PAGE 5 ---
+ 
+5 
+
+
+--- PAGE 6 ---
+Many Variations of Notations 
+ 
+6 
+
+--- PAGE 7 ---
+University Database 
+University Database
+Registration
+Grade 
+Recording
+Faculty 
+Assignment
+Course 
+Scheduling
+Entities: 
+  students, faculty, courses,
+  offerings, enrollments
+Relationships:
+  faculty teach offerings, 
+  students enroll in
+  offerings, offerings made 
+  of courses, ...
+7 
+
+--- PAGE 8 ---
+Quick Exercise  
+• High level Entity–Relationship diagram for E-Commerce 
+• Convert ER diagram to tables 
+ 
+ 
+8 
+Exercise 
+
+--- PAGE 9 ---
+Convert Entity Relationship Diagram to Tables 
+• Create table for each entity, and consider 
+– Primary key 
+– Complex attributes such as name,  phone numbers 
+– Data type of attributes (e.g., number, text) 
+• Create table for relationship, and consider 
+– Primary key 
+– Or use pair of foreign keys as primary key 
+– Data type of attributes 
+• Create constraints on the tables 
+– E.g., does the column allow missing value? Does the value have to be from a fixed set (e.g., gender) 
+ 
+ 
+• Both entity and relationship become tables in Relational model 
+9 
+
+--- PAGE 10 ---
+One-to-Many (1:N), Many-to-Many (M:N) 
+• One-to-Many (1:N): 
+– A single record in one table can be related to multiple records in another table, but each of 
+those records relates back to only one record in the first table. 
+– Example: One customer can place many orders, but each order belongs to one customer. 
+ 
+• Many-to-Many (M:N): 
+– Multiple records in one table can be related to multiple records in another table. This is 
+usually implemented using a junction (bridge) table that stores foreign keys from both tables. 
+– Example: Students can enroll in many courses, and each course can have many students. 
+ 
+• Many-to-One (N:1): 
+– Multiple records in one table are related to a single record in another table. It is essentially the 
+reverse of a one-to-many relationship. 
+– Example: Many orders belong to one customer. 
+10 
+
+--- PAGE 11 ---
+Youtube Video on Convert ERD to Relational 
+Data Model (Tables) 
+ 
+11 
+
+--- PAGE 12 ---
+Oracle Relational Diagram Example 
+12 
+
+--- PAGE 13 ---
+MySQL ER Diagram Example 
+ 
+13 
+
+--- PAGE 14 ---
+Generate ER Diagram using Reverse Engineering  
+• Demo 
+14 

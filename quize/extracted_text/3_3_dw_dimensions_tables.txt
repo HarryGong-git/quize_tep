@@ -1,0 +1,285 @@
+--- PAGE 1 ---
+Working with Dimensions 
+
+--- PAGE 2 ---
+Agenda 
+ Primary Key 
+ Surrogate keys 
+ Attributes 
+ 
+ Date dimension 
+ Time dimension 
+ “Not applicable” row in dimension 
+ 
+ Types of Dimensions 
+ Degenerate Dimension 
+ Conformed Dimension 
+ Slowly Changing Dimension 
+ Fast Changing Dimension 
+2 
+
+--- PAGE 3 ---
+Preliminary retail sales grocery store dimensional 
+model 
+ 
+3 
+
+
+--- PAGE 4 ---
+Use Surrogate keys as Primary keys for dimension 
+tables 
+ It is important that primary keys of dimension tables remain stable.  
+ It is strongly recommended that surrogate keys are created and used for 
+primary keys for all dimension tables. 
+ 
+ Surrogate keys are keys that are maintained within the data warehouse 
+instead of the natural keys taken from source data systems. 
+ Also known as "dummy keys", "non-natural keys", "artificial keys", 
+"meaningless keys", ... 
+ 
+4 
+
+--- PAGE 5 ---
+Why Use Surrogate keys 
+ Data tables in various OLTP source systems may use different keys for the same entity. 
+ E.g., one source system uses NRIC, another source system uses Passport number 
+ 
+ It is also possible that a single key is being used by different instances of the same entity 
+ 
+ This can be a major problem when trying to consolidate information from various source 
+systems 
+ 
+ A surrogate key uniquely identifies each entity in the dimension table, regardless of its 
+natural source key.  
+ 
+ A surrogate key generates a simple integer value for every new entity. 
+ 
+ Surrogate keys provide the means to maintain data warehouse information when dimensions 
+change. 
+5 
+
+--- PAGE 6 ---
+Examples of Surrogate keys 
+6 
+DimCustomer 
+DimCurrency 
+ FactOnlineSales 
+
+--- PAGE 7 ---
+Surrogate keys and Change of Dimension 
+ Examples of change:  
+ Changes in the organization sales force structures  
+ If a sales representative is transferred from one region to another, the organization may want 
+to track all sales for the sales representative with the original region for data prior to the 
+transfer date, and sales data for the sales representative in the new region after the transfer 
+date 
+ 
+ A bank Customer change from consumer banking segment to private banking segment  
+ The bank wants to attribute the related revenue/profit to consuemr banking business before 
+the change and attribute the related revenue/profit to private banking after the change  
+ 
+ Surrogate key can help 
+ The person is represented twice in the dimension table with two different surrogate keys: one before 
+the change, one after the change  
+ The person's unique identifier will still be captured in the dimension table, to enable analysis/query based 
+on identifier 
+7 
+
+--- PAGE 8 ---
+Example: Surrogate keys and Change of 
+Dimension 
+CustomerKey Identifier FirstName LastName AUM Segment Change 
+Date 
+79 12345678 David Tan 102,300 Mass 2021-09-19  
+562 12345678 David Tan 15,000,000 PB 
+8 
+Use Surrogate key as primary key for dimension table. 
+ 
+Use multiple rows to represent the change. 
+ 
+Use a separate field in the dimension table to preserve the natural key of the entity being used in the 
+source system.  
+This helps us to go back to the original source if we need to track from where (which OLTP Source) the data 
+came into the dimensional model.  
+We can summarize fact table data for a single entity in the fact table (using the natural key) regardless of 
+the number of times the entity’s record appears in the dimension table. 
+
+--- PAGE 9 ---
+Attributes in Dimension Table 
+ Non-key columns are generally referred to as attributes. 
+ The dimension tables should contain business descriptive columns that users 
+reference to define their restriction criteria for ad hoc business queries. 
+ The dimension table attributes show up as report labels inside the reports for 
+senior management. 
+ Use a separate field in the dimension table to preserve the natural source system 
+key of the entity being used in the source system. 
+ Attributes reflect the potential areas of interest and attributes that can be used 
+for aggregations as well as for selective constraints and report breaks. 
+ If a dimension table includes a code, in most cases, include the code description as 
+well. 
+ The dimensional attributes serve as headings of the columns of the report and 
+should be descriptive and easy to understand. 
+ E.g., 0/1 or Y/N is better represented as Yes/No 
+9 
+
+--- PAGE 10 ---
+Date Dimension 
+ It is very important to identify the 
+granularity of the date and time 
+dimensions. 
+ Date and time dimensions help determine 
+the granularity of the overall dimensional 
+model and the level of information that is 
+stored in it. 
+ All data warehouse has a date dimension 
+because all dimensional models are based 
+on a time series of operations. 
+10 
+
+
+--- PAGE 11 ---
+Date Dimension 
+ The date dimension does not have an OLTP source system connected to it.  
+ The date dimension can be built independently even before the actual dimensional 
+design has started.  
+ The best way to built a date dimension is to identify all columns needed and then use 
+SQL language to populate the date dimension table for columns such as date, day, 
+month, and year.  
+ For other columns, such as holidays, with Christmas or Boxing Day, manual entries may 
+be required.  
+ The same is true for columns such as fiscal date, fiscal month, fiscal quarter, and fiscal 
+years.  
+ Can also use the spreadsheet to create the date dimension. 
+11 
+
+--- PAGE 12 ---
+Time Dimension 
+ The time dimension is handled separately from the date dimension. 
+ If we have time as part of date dimension, and capture time at second level, 
+we would have a huge number of rows in the dimension table even for a 
+year: 
+365 (Days) x 24 (Hours) x 60 (Minutes) x 60 (Seconds) = 31,536,000 rows 
+ Design the time dimension based on user requirement. 
+ hour 
+ hour range 
+ Early morning (6 a.m. to 8 a.m.) 
+ Late morning hours (8 a.m. to 11 a.m.) 
+ Rush hour (11 a.m. to 1 p.m.) 
+ Lunch hour (1 p.m. to 2 p.m.) 
+12 
+
+--- PAGE 13 ---
+Time Dimension 
+ 
+13 
+
+
+--- PAGE 14 ---
+Special Row for the “Not applicable” Scenario in 
+Dimension Tables  
+ Typically, each dimension table will have one or more additional Not Applicable 
+scenario records. 
+ Two reasons: 
+ The fact that the foreign key in a fact table can never be null 
+ Handle situations where the key is not available 
+ E.g., Customer ID is not available for non member customer 
+ Properly label that the "Not applicable" row 
+ E.g., "Non Member Customer", "Date unknown", "Does not have insurance" 
+14 
+
+--- PAGE 15 ---
+Degenerate dimensions 
+ degenerate dimensions: dimensions without any attributes  
+ They are not typical dimensions, but often simply a transaction number that is placed inside the fact table  
+ 
+ Examples:  
+ transaction numbers 
+ bill numbers 
+ courier tracking number 
+ order number 
+ invoice number 
+ application acknowledgement number 
+ ticket number 
+ reference numbers 
+ 
+ Whether degenerate dimension is needed depends on grain of the fact table  
+ degenerate dimension is needed for fine grained fact table  
+ it is not needed for summary fact table  
+15 
+degenerate 
+dimension  
+Optional 
+
+--- PAGE 16 ---
+ 
+16 
+Optional 
+
+--- PAGE 17 ---
+Conformed dimensions 
+ conformed dimensions: dimension tables that are referenced or are likely to 
+be referenced by multiple fact tables 
+ 
+ Identify whether a dimension being used already exists inside the enterprise 
+data warehouse 
+ 
+ For a non-existent new dimension, create a new dimension with planned 
+long-term cross-enterprise usage. 
+17 
+Optional 
+
+--- PAGE 18 ---
+Slowly Changing Dimensions (SCD) 
+ A slowly changing dimension is a dimension whose attributes for a record 
+(row) change slowly over time. 
+ Example: Address of customer 
+ 
+18 
+customer moves to California 
+Optional 
+
+--- PAGE 19 ---
+Three Ways to Handle the Change 
+ SCD Type 1: The new row replaces the original record 
+ No trace of the old record exists 
+ 
+ 
+ 
+ SCD Type 2: A new row is added into the customer dimension table. 
+ The new row gets its own primary key (surrogate key) 
+19 
+Optional 
+
+--- PAGE 20 ---
+Three Ways to Handle the Change 
+ SCD Type 3: The original record is modified to reflect the change. Also 
+a new column is added to record the previous value prior to the 
+change. 
+ 
+20 
+Optional 
+
+--- PAGE 21 ---
+Fast changing dimensions 
+ A fast changing dimension is a dimension whose attributes for a record (row) change 
+fast over time. Also called rapidly changing dimensions. 
+ 
+ Cannot be handled using the Type-1, Type-2, or Type-3 approaches used for slowly 
+changing dimensions. 
+ 
+ The best approach for handling very fast changing dimensions is to separate the fast 
+changing attributes into one or more separate dimensions which are called mini-
+dimensions. 
+ 
+ The fact table then has two or more foreign keys—one for the primary dimension table 
+and another for the one or more mini-dimensions (consisting of fast changing 
+attributes). 
+21 
+Optional 
+
+--- PAGE 22 ---
+The Fact Table has Foreign Keys to Both 
+Dimension Table and Mini-Dimension Table 
+ 
+22 
+Optional 

@@ -1,0 +1,148 @@
+--- PAGE 1 ---
+Brief Introduction to Database Normalization 
+1 
+
+--- PAGE 2 ---
+ Relational database modeling process – normalization 
+ Objective: Reduce data redundancy and improve data integrity 
+ 
+ Organizing the columns (attributes) and tables (relations) of a database to 
+ensure that their dependencies are properly enforced by database integrity 
+constraints. 
+ 
+ Relations are progressively decomposed into smaller relations to a point 
+where all attributes in a relation are very tightly coupled with the primary 
+key of the relation. 
+Relational Database Theory 
+2 
+
+--- PAGE 3 ---
+ First normal form (1NF):  
+ Data items are atomic 
+ Rows are unique 
+ Second normal form (2NF): No "partial" dependencies (depends on the whole key) 
+ Single column primary key. (All non-prime attributes (attributes that are not 
+part of a candidate key) must be fully functionally dependent on the entire 
+primary key, not just part of it.) 
+ Third normal form (3NF): No "transitive" dependencies (depends only on the key) 
+ all non-key attributes are completely independent of each other. (A non-
+prime attribute (an attribute not part of any candidate key) must depend only 
+on the primary key and not on another non-prime attribute.) 
+ 
+Normal Forms 
+3 
+
+--- PAGE 4 ---
+Without Any Normalization 
+ Assume a table containing customer information and banking product. 
+Without any normalization, all information is stored in one table. 
+https://www.guru99.com/database-normalization.html 
+Name City Country Product 
+Mark Lee Singapore Singapore 
+Deposit, 
+Credit Card 
+Alice Wong Johor Bahru Malaysia Credit Card 
+Rick Teo Johor Bahru Malaysia 
+Home Loan, 
+Car Loan 
+customer 
+4 
+Note: in this simple example, we assume names are unique 
+
+--- PAGE 5 ---
+1NF (First Normal Form) Rules 
+ Each table cell should contain a single value. 
+ Each record needs to be unique. 
+https://www.guru99.com/database-normalization.html 
+Name City Country Product 
+Mark Lee Singapore Singapore Deposit 
+Mark Lee Singapore Singapore Credit Card 
+Alice Wong Johor Bahru Malaysia Credit Card 
+Rick Teo Johor Bahru Malaysia Home Loan 
+Rick Teo Johor Bahru Malaysia Car Loan 
+customer 
+5 
+Key: Name, Product 
+
+--- PAGE 6 ---
+ Requirement: Key is single column 
+ Primary key added 
+2NF (Second Normal Form) 
+CID Name City Country 
+1 Mark Lee Singapore Singapore 
+2 Alice Wong Johor Bahru Malaysia 
+3 Rick Teo Johor Bahru Malaysia 
+CID Product 
+1 Deposit 
+1 Credit Card 
+2 Credit Card 
+3 Home Loan 
+3 Car Loan 
+customer product_holding 
+6 
+Key: CID 
+Key: CID, Product 
+
+--- PAGE 7 ---
+3NF (Third Normal Form) 
+CID Name City 
+1 Mark Lee Singapore 
+2 Alice Wong Johor Bahru 
+3 Rick Teo Johor Bahru 
+City Country 
+Singapore Singapore 
+Johor Bahru Malaysia 
+CID Product 
+1 Deposit 
+1 Credit Card 
+2 Credit Card 
+3 Home Loan 
+3 Car Loan 
+customer 
+product_holding 
+city 
+7 
+ Requirement:  non-key attributes depends on keys 
+ Country depends on City 
+Key: CID Key: CID, Product 
+Key: City  
+
+--- PAGE 8 ---
+More examples of normalization  
+University Tables 
+8 
+staffNum firstName lastName gender 
+1234 Jane Smith F 
+2323 Tom Green M 
+1111 Jim Brown M 
+Staff 
+matricNum fName lName gender year supervisor 
+121212 Mary Hill F 2003 1234 
+232323 Steve Gray M 2005 1234 
+123456 Jimmy Smith M 2000 1111 
+Student 
+coursecode studentNum 
+c1 121212 
+c3 121212 
+c3 123456 
+c1 232323 
+Etc etc Etc etc 
+Enrolled 
+coursecode Credit value 
+c1 120 
+c3 60 
+c5 60 
+Course 
+
+--- PAGE 9 ---
+Relation Database Theory, cont’d 
+ The process of normalization generally breaks a table into many tables where 
+attributes depends on primary keys. 
+ A normalized database yields a flexible model, making it easy to maintain 
+dynamic relationships between business entities. 
+ Normalized tables are effective and efficient for operational databases – a lot 
+of inserts and updates (aiming at optimizing insert and update speed).  
+ 
+ However, normalized tables are not friendly to analysis. Many tables need to 
+be joined to conduct analysis. 
+9 

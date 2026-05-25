@@ -1,0 +1,314 @@
+--- PAGE 1 ---
+Database and OLTP (Online 
+Transaction Processing), Relational 
+Model 
+1 
+
+--- PAGE 2 ---
+Outline 
+• Database for OLTP 
+• Relational Model 
+2 
+
+--- PAGE 3 ---
+Importance of Database 
+• Databases crucial for daily operations and decision making in organizations 
+• Database technology 
+– Major part of software industry 
+– Important research field 
+– Revolutionary evolvement over 40 years 
+– Foundation for business operation 
+– Long term memory of organizations 
+– Foundation for analytics and data driven strategy (BI) 
+• Big field with employment opportunities 
+– DBMS system developer 
+– DB app developer 
+– Modeler 
+– DBA 
+– Analyst 
+– Data engineer 
+ 
+3 
+
+--- PAGE 4 ---
+Terminology 
+• Data: raw facts about things and events 
+• Information: transformed data that has value for decision making, typically at aggregated 
+level 
+ 
+• OLTP (Online transaction processing): information systems facilitate and manage transaction-
+oriented applications, typically for data entry and retrieval transaction processing. 
+• OLAP (Online analytical processing): an approach to answering multi-dimensional analytical 
+queries swiftly in computing. 
+4 
+
+--- PAGE 5 ---
+High Level Data Types 
+• Numeric 
+• Text 
+• Date and Time 
+• Boolean 
+• Complex 
+5 
+
+--- PAGE 6 ---
+DBMS 
+6 
+
+--- PAGE 7 ---
+Database Management System (DBMS) 
+• Collection of software components that support data acquisition, dissemination, 
+storage, maintenance, retrieval, and formatting 
+• Product variations 
+– Enterprise DBMSs 
+– Desktop DBMSs 
+– Embedded DBMSs 
+• Major part of information technology infrastructure 
+7 
+
+--- PAGE 8 ---
+DBMS Client Server Architecture 
+
+
+--- PAGE 9 ---
+Example, MySQL 
+• Server 
+– MySQL 
+• Client (GUI tools) 
+– MySQL Workbench 
+– HeidiSQL 
+– Navicat for MySQL 
+– phpMyAdmin 
+• Client (Code) 
+– Python 
+– … 
+9 https://www.databasejournal.com/features/top-10-mysql-gui-tools/ 
+ 
+
+--- PAGE 10 ---
+Database Software 
+10 Image source: https://www.alooma.com/blog/types-of-modern-databases 
+
+--- PAGE 11 ---
+Different Types of Databases 
+• Youtube video 
+11 
+
+--- PAGE 12 ---
+Most data are entered through business process  
+(by business operator or user) 
+12 
+
+
+--- PAGE 13 ---
+OLTP (ONLINE TRANSACTION 
+PROCESSING) 
+13 
+
+--- PAGE 14 ---
+Most Databases are used for Business Transaction 
+Transaction 
+• Supports daily operations of an organization 
+• Collection of database operations 
+• Reliably and efficiently processed as one unit of work 
+• No lost data 
+– Interference among multiple users 
+– Failures 
+14 
+
+--- PAGE 15 ---
+Architecture for Enterprise Data Systems 
+image source: http://4.bp.blogspot.com/-RhSkZIrrDpc/UcFsUzu4M2I/AAAAAAAABoA/jQ5VBr8lIRg/s1600/oltp-vs-olap.jpg 15 
+OLTP 
+
+--- PAGE 16 ---
+ATM Transaction Example 
+Get account number, pin, type, and amount  
+START TRANSACTION 
+ SELECT balance based on account number and type 
+ If balance is sufficient then 
+  UPDATE account by posting debit 
+  INSERT history record 
+  Display message and dispense cash 
+  Print receipt if requested 
+ Else 
+   Display insufficient balance 
+ End If 
+ On Error: ROLLBACK  
+COMMIT 
+16 
+
+--- PAGE 17 ---
+Transaction Processing 
+• Reliable and efficient processing of transactions 
+– Control simultaneous users 
+– Recover from failures 
+• Internal features for enterprise DBMSs 
+– Concurrency control manager 
+– Recovery manager 
+– Transparent services for application developers 
+17 
+
+--- PAGE 18 ---
+Charateristics of OLTP 
+Source of data Operational data; OLTPs are the original source of the data. 
+Purpose of data To control and run fundamental business tasks 
+What the data tell Reveals a snapshot of ongoing business processes 
+Inserts and Updates Short and fast inserts and updates initiated by end users 
+Queries Relatively standardized and simple queries  
+Returning relatively few records 
+Processing Speed Typically very fast 
+Space Requirements Can be relatively small if historical data is archived 
+Database Design Highly normalized with many tables 
+Backup and Recovery 
+Backup religiously; operational data is critical to run the business, 
+data loss is likely to entail significant monetary loss and legal 
+liability 
+http://datawarehouse4u.info/OLTP-vs-OLAP.html 
+18 
+
+--- PAGE 19 ---
+19 
+Example of 
+why Speed is 
+Important 
+https://usa.visa.com/dam/VCOM/download/corporate/media/visanet-technology/aboutvisafactsheet.pdf 
+
+--- PAGE 20 ---
+RELATIONAL MODEL 
+20 
+
+--- PAGE 21 ---
+Introduction to Relational Model 
+ 
+• Introduced by E.F. Codd in 1970 
+• Relational DBMS systems include Oracle, DB2, Sybase, Informix.  
+• Main Characteristics: 
+– Database is perceived as a set of tables 
+– Query results are also tables  
+• Main advantages: 
+– Simple 
+– With solid math base 
+• Relational model: 
+– Database structure: the database is represented by tables 
+– Integrity constraints: the tables satisfy certain constraints 
+– Data manipulation: operators are available for data manipulation 
+
+--- PAGE 22 ---
+Basic concepts 
+• Relation (Table) 
+• Attribute (Column) 
+• Key 
+• Integrity constraint 
+• A database consists of relations and integrity constraints 
+ 
+ 
+22 
+
+--- PAGE 23 ---
+Relational Database Basics 
+• Collection of tables 
+• Heading: table name and column names 
+– Each column has a data type 
+• Body: rows, occurrences of data 
+Student 
+StdNo StdFirstName StdLastName StdCity StdState StdZip StdMajor StdClass StdGPA 
+123-45-6789 HOMER WELLS SEATTLE WA 98121-1111 IS FR 3.00 
+124-56-7890 BOB NORBERT BOTHELL WA 98011-2121 FIN JR 2.70 
+234-56-7890 CANDY KENDALL TACOMA WA 99042-3321 ACCT JR 3.50 
+ 
+23 
+
+
+--- PAGE 24 ---
+Data are Captured in Multiple Tables 
+OfferNo StdNo EnrGrade 
+1234 123-45-6789 3.3 
+1234 234-56-7890 3.5 
+4321 123-45-6789 3.5 
+4321 124-56-7890 3.2 
+OfferNo CourseNo OffTerm OffYear OffLocation OffTime FacNo OffDays 
+1111 IS320 SUMMER 2013 BLM302 10:30 AM   MW 
+1234 IS320 FALL 2012 BLM302 10:30 AM 098-76-5432 MW 
+4321 IS320 FALL 2012 BLM214 3:30 PM 098-76-5432 TTH 
+StdNo StdFirstName StdLastName StdCity StdState StdZip StdMajor StdClass StdGPA 
+123-45-6789 HOMER WELLS SEATTLE WA 98121-1111 IS FR 3.00 
+124-56-7890 BOB NORBERT BOTHELL WA 98011-2121 FIN JR 2.70 
+234-56-7890 CANDY KENDALL TACOMA WA 99042-3321 ACCT JR 3.50 
+Course Offering 
+Enrollment 
+Student 
+24 
+
+--- PAGE 25 ---
+Alternative Terminology 
+Table-Oriented Set-Oriented Record-Oriented 
+Table Relation Record Type, File 
+Row Tuple Record 
+Column Attribute Field 
+25 
+
+--- PAGE 26 ---
+Primary Key and Foreign Key  
+(also part of Integrity Rules) 
+• Entity integrity: primary keys  
+– Each table has column(s) with unique values 
+– No missing values for primary keys 
+– Ensures traceable entities 
+– Examples: Student ID, Bank account, credit card number 
+ 
+• Referential integrity: foreign keys 
+– Values of a column in one table match values from a source table 
+– Ensures valid references among tables 
+– E.g., every ATM transaction must refer to an account  
+ 
+26 
+
+--- PAGE 27 ---
+Data in Tables Are Linked Together Using Keys 
+ OfferNo   CourseNo
+  1234      IS320
+  4321      IS320
+Offering
+ StdNo                  OfferNo
+ 123-45-6789       1234
+ 234-56-7890      1234
+ 123-45-6789      4321
+ 124-56-7890          4321
+Enrollment
+ StdNo                  StdLastName
+ 123-45-6789          WELLS
+ 124-56-7890          KENDALL
+ 234-56-7890          NORBERT
+Student
+27 
+
+--- PAGE 28 ---
+Primary Types of Integrity Constraints 
+Constraint Type Purpose Example 
+Entity Integrity Ensures every table has a unique, 
+non-null primary key. 
+An EmployeeID cannot be empty 
+and must be unique for every 
+worker. 
+Referential Integrity Maintains consistency between 
+related tables via foreign keys. 
+You cannot delete a Department if 
+there are still Employees assigned 
+to it. 
+Domain Integrity Restricts the type, format, or range 
+of data in a column. 
+A Gender column only accepting 
+'M', 'F', or 'O'; or an Age column 
+restricted to integers. 
+User-Defined Integrity Custom business rules that don't fit 
+into the other categories. 
+A rule stating that a 
+WithdrawalAmount cannot exceed 
+the CurrentBalance. 
+28 
+
+--- PAGE 29 ---
+Exercise  
+• Examples of integrity constraints 
+29 

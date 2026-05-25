@@ -1,0 +1,125 @@
+--- PAGE 1 ---
+SQL Subqueries and CTEs 
+
+--- PAGE 2 ---
+What is a SQL Subquery? 
+• A query nested inside another SQL query 
+• Executed logically before the outer query 
+• Can appear in SELECT, FROM, WHERE, HAVING 
+• Used to compute intermediate results 
+2 
+
+--- PAGE 3 ---
+How a Subquery Works 
+3 
+Inner Query: 
+SELECT AVG(Population) 
+FROM country 
+Outer Query: 
+SELECT Name 
+FROM country 
+WHERE Population > (result) 
+Example:  
+Goal: Find countries with population above average 
+ 
+SELECT Name, Population  
+FROM country 
+WHERE Population > (SELECT AVG(Population) FROM country); 
+
+--- PAGE 4 ---
+Types of Subqueries 
+• Scalar – returns a single value 
+• Row – returns one row 
+• Table – returns multiple rows 
+4 
+
+--- PAGE 5 ---
+What is a CTE (Common Table Expression)? 
+• CTE = Common Table Expression 
+• Defined using WITH 
+• Temporary, named result set 
+• Improves readability and structure 
+5 
+Think of it like giving a subquery a readable name so your SQL becomes 
+easier to write and understand. 
+
+--- PAGE 6 ---
+Syntax of CTE 
+6 
+WITH cte_name AS ( 
+    SELECT ... 
+) 
+SELECT ... 
+FROM cte_name; 
+WITH cte1 AS ( 
+    SELECT ... 
+), 
+cte2 AS ( 
+    SELECT ... 
+) 
+SELECT ... 
+FROM cte2; 
+Basic Syntax You can also define multiple CTEs: 
+
+--- PAGE 7 ---
+How a CTE (Common Table Expression) Works 
+7 
+CTE Definition: 
+WITH avg_pop AS ( 
+  SELECT AVG(Population) 
+  FROM country 
+) 
+Main Query: 
+SELECT Name 
+FROM country, avg_pop 
+WHERE Population > avg_p 
+• Break logic into clear steps 
+• WITH avg_pop AS (...) 
+• Main query reads like a sentence 
+• Easy to reuse and explain 
+ 
+ 
+ 
+WITH avg_pop AS ( 
+  SELECT AVG(Population) as avg_p  
+  FROM country 
+) 
+ 
+SELECT Name, Population 
+FROM country, avg_pop 
+WHERE Population > avg_p 
+
+--- PAGE 8 ---
+Example of Multiple CTEs 
+8 
+WITH dept_counts AS ( 
+    SELECT department, COUNT(*) AS total 
+    FROM employees 
+    GROUP BY department 
+), 
+avg_counts AS ( 
+    SELECT AVG(total) AS avg_total 
+    FROM dept_counts 
+) 
+SELECT d.* 
+FROM dept_counts d, avg_counts a 
+WHERE d.total > a.avg_total; 
+
+--- PAGE 9 ---
+Subquery vs CTE 
+Feature Subquery Common Table Expression (CTE) 
+Syntax Defined inline (nested inside SELECT, FROM, or 
+WHERE). Defined at the top using the WITH clause. 
+Readability Can become a "wall of text" with deep nesting. Very high; breaks logic into named, sequential steps. 
+Reusability Can only be used once; must be copy-pasted to 
+reuse. Can be referenced multiple times in the same query. 
+Recursion Not supported. Supported (crucial for hierarchical data). 
+Use Cases Quick, single-value lookups or simple filters. Complex reports, joins, and multi-step logic. 
+9 
+
+--- PAGE 10 ---
+Query Exercise 
+• Use the data in World.city, find out the percentage of Sydney 
+population in Australia population. 
+10 
+Exercise 

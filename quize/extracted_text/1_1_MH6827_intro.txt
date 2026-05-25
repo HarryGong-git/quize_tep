@@ -1,0 +1,176 @@
+--- PAGE 1 ---
+MH6827 
+Financial Data Management and Business Intelligence 
+WU Wei 
+2026 
+weiw.wu@ntu.edu.sg 
+1 
+
+--- PAGE 2 ---
+About me 
+• https://www.linkedin.com/in/wei-wu-0bb64911/ 
+ 
+2 
+
+--- PAGE 3 ---
+Background Survey 
+https://www.mentimeter.com/ 
+ 
+3 
+
+--- PAGE 4 ---
+Example of BI Dashboard 
+ 
+4 
+
+
+--- PAGE 5 ---
+Another Example: property price 
+https://www.edgeprop.sg/analytic/heatmap 
+ 
+ 
+5 
+
+
+--- PAGE 6 ---
+Real time dashboard 
+https://www.coindesk.com/price/bitcoin/ 
+ 
+6 
+
+
+--- PAGE 7 ---
+Course Objectives 
+• Introduction to data management and business intelligence systems 
+• Relational data model 
+• Data Management Language: SQL 
+• Data warehousing, data analysis 
+• BI/dashboard 
+• Software for data management and business intelligence 
+• Application of business intelligence 
+– define and analyse business opportunity 
+– analyse the data 
+– create a solution prototype 
+– design database (DB) 
+– design data warehouse (DW) 
+– ETL data pipeline 
+– BI dashboard 
+– Present the data story 
+7 
+
+--- PAGE 8 ---
+Analytics Hierarchy 
+ 
+This Course 
+8 
+
+--- PAGE 9 ---
+Architecture for Enterprise Data Warehouse and 
+Business Intelligence 
+image source: http://4.bp.blogspot.com/-RhSkZIrrDpc/UcFsUzu4M2I/AAAAAAAABoA/jQ5VBr8lIRg/s1600/oltp-vs-olap.jpg 9 
+
+--- PAGE 10 ---
+Information Pyramid in DW/BI 
+ 
+10 
+
+--- PAGE 11 ---
+Architecture for Enterprise Data Systems 
+image source: http://4.bp.blogspot.com/-RhSkZIrrDpc/UcFsUzu4M2I/AAAAAAAABoA/jQ5VBr8lIRg/s1600/oltp-vs-olap.jpg 11 
+
+
+--- PAGE 12 ---
+What skills it takes to make a DW/BI project 
+Succeed? 
+"need to be one-half DBA (database administrator) and 
+one-half MBA (business analyst) as you tackle your DW/BI 
+project." 
+ 
+     -- Ralph Kimball 
+12 
+
+
+--- PAGE 13 ---
+Job Titles Related to Data Management & 
+Business Intelligence 
+1. Data Scientist 
+2. Business Analyst 
+3. Data Analyst 
+4. Business Intelligence Analyst 
+5. Data Engineer 
+6. Data Warehouse Analyst 
+7. Data Warehouse Engineer 
+8. Data Modeler 
+9. DBA (Database Administrator) 
+10. Data Architect 
+11. Data Governance 
+ 
+13 
+
+--- PAGE 14 ---
+Course Plan 
+Lecture Main topic Sub topic Assessment Activity 
+1 Data Management and OLTP 
+Relational model 
+ER Diagram 
+OLTP Operations 
+2 SQL SQL 
+Join 
+3 More SQL 
+Aggregation 
+Advanced SQL 
+Start of team project 
+4 Data Warehouse and OLAP 
+Dimensional model 
+Star Schema, data cube 
+OLAP Operations 
+5 ETL 
+ETL process 
+ETL tool 
+ETL example 
+6 Business Intelligence 
+Visualization 
+Dashboard 
+Advanced SQL 
+7 May 26 
+Team project presentation 
+ 
+Exam 
+14 
+
+--- PAGE 15 ---
+Assessment 
+• Class Participation and Quiz:    10% 
+• Team Project:          30% 
+• Form teams of  4-5 members 
+• To be given during 3rd week 
+• Team short presentation at the last lesson 
+• Exam      60% 
+ 
+15 
+
+--- PAGE 16 ---
+Reference Books 
+– “The Data Warehouse Toolkit: The 
+Definitive Guide to Dimensional 
+Modeling” 
+• By Ralph Kimball, Margy Ross   
+ 
+– “Dimensional Modeling: In a 
+Business Intelligence Environment” 
+• By Chuck Ballard, Daniel M. Farrell, 
+Amit Gupta, Carlos Mazuela, Stanislav 
+Vohnik 
+16 
+
+--- PAGE 17 ---
+What you will learn 
+• Relational Model and Database design  
+• SQL 
+• Dimensional Model and Data warehouse design 
+• ETL process 
+• Design and build BI report/dashboard 
+ 
+• Tools: MySQL, SQL Server (optional), Power BI 
+• You can choose your own database and BI software 
+17 

@@ -1,0 +1,182 @@
+--- PAGE 1 ---
+Dimensional Model and ETL Example 
+Using Sakila example 
+1 
+
+--- PAGE 2 ---
+Define the Grain for Rental Fact Table 
+• date, store, film_category, number of rental 
+FactRental DimDate 
+DimStore 
+DimCategory 
+2 
+
+--- PAGE 3 ---
+FactRental Example Values 
+ 
+3 
+
+
+--- PAGE 4 ---
+Prepare Dimension Tables 
+• Define DimDate 
+• Define DimStore 
+• Define DimCategory 
+ 
+• Generate date for DimDate 
+• Extract data from source for DimStore, generate surrogate keys 
+• Extract data from source for DimCategory, generate surrogate keys 
+ 
+• Load data into dimension tables 
+ 
+4 
+
+--- PAGE 5 ---
+Generate date for DimDate 
+ 
+from datetime import date, timedelta 
+ 
+d1 = date(2001, 1, 1)  # start date 
+d2 = date(2050, 12, 31)  # end date 
+ 
+delta = d2 - d1         # timedelta 
+ 
+for i in range(delta.days + 1): 
+    print(d1 + timedelta(i)) 
+python gen_dates.py > dates.txt 
+gen_dates.py 
+5 
+
+--- PAGE 6 ---
+Other columns of DimDate can be generated using 
+SQL once Dates are loaded into a temp table 
+• Load dates.txt into a dates table 
+• Generate date dimension table using following SQL 
+ 
+ 
+ 
+ SELECT d as DateKey,  
+ DAYOFWEEK(d) as DayNumberOfWeek,  
+ WEEKOFYEAR(d) as WeekNumberOfYear,  
+ MONTH(d) as MonthNumberOfYear,  
+ QUARTER(d) as CalendarQuarter,  
+ YEAR(d) as CalendarYear 
+FROM dates 
+6 
+
+--- PAGE 7 ---
+Example of Defining and Populating DimCategory 
+• Create DimCategory Table 
+ 
+ 
+ 
+ 
+• Populate DimCategory Table 
+CREATE TABLE `sakila_dwh`.`dimcategory` ( 
+  `CategoryKey` INT NOT NULL AUTO_INCREMENT COMMENT '', 
+  `category_id` TINYINT(3) NULL COMMENT '', 
+  `name` VARCHAR(25) NULL COMMENT '', 
+  `last_update` TIMESTAMP NULL COMMENT '', 
+  PRIMARY KEY (`CategoryKey`)  COMMENT ''); 
+Insert into sakila_dwh.dimcategory(category_id, name, last_update)  
+Select category_id, name, last_update 
+From sakila.category 
+Define surrogate key, and 
+make it auto increment 
+Surrogate key will be auto populated 
+7 
+
+--- PAGE 8 ---
+Example of Defining and Populating DimStore 
+• As practice exercise 
+8 
+
+--- PAGE 9 ---
+Initial Load of Fact Table 
+• Assume initial load takes data until end of 2005 July 
+ 
+• Define FactTable 
+• Extract data from source table 
+• Join with Dimension tables to get Surrogate Keys 
+• Load into FactTable 
+9 
+
+--- PAGE 10 ---
+Intial Definition, Extraction, Transaformation, and 
+Loading for Fact table 
+Note: in this implementation surrogate key from DimStore is not used. 
+Pratice exercie: change this code to use surrogate key from DimStore instead of using store_id. 
+Create table sakila_dwh.FactRental AS 
+SELECT date(r.rental_date) as datekey, i.store_id, dc.categorykey, count(1) as num_rental 
+FROM sakila.rental r  
+ JOIN sakila.inventory i ON r.inventory_id = i.inventory_id  
+ JOIN sakila.film f ON i.film_id = f.film_id  
+     JOIN sakila.film_category fc ON f.film_id = fc.film_id     
+ JOIN sakila.category c ON fc.category_id=c.category_id 
+     JOIN sakila_dwh.dimcategory dc on c.category_id = dc.category_id 
+WHERE r.rental_date<'2005-08-01' 
+GROUP BY datekey, store_id, categorykey 
+ORDER BY datekey 
+10 
+
+--- PAGE 11 ---
+Fact Table content example 
+DateKey  store_id  CategoryKey  num_rental 
+2005-05-24 1 2 1 
+2005-05-24 1 5 1 
+2005-05-24 1 8 1 
+2005-05-24 1 11 1 
+2005-05-24 2 3 2 
+2005-05-24 2 11 1 
+2005-05-24 2 12 1 
+2005-05-25 1 1 4 
+2005-05-25 1 2 8 
+2005-05-25 1 3 6 
+2005-05-25 1 4 3 
+2005-05-25 1 5 3 
+11 
+
+--- PAGE 12 ---
+Daily ETL of Fact Table 
+• Assume daily refresh 
+ 
+• Extract one day's data from source table 
+• Transform 
+• Load into FactTable 
+12 
+
+--- PAGE 13 ---
+Daily ETL 
+ 
+ 
+ 
+ 
+ 
+ 
+INSERT INTO sakila_dwh.FactRental  
+SELECT date(r.rental_date) as datekey, i.store_id, dc.categorykey, count(1) as num_rental 
+FROM sakila.rental r   
+ JOIN sakila.inventory i ON r.inventory_id = i.inventory_id   
+ JOIN sakila.film f ON i.film_id = f.film_id       
+ JOIN sakila.film_category fc ON f.film_id = fc.film_id      
+ JOIN sakila.category c ON fc.category_id=c.category_id      
+ JOIN sakila_dwh.dimcategory dc on c.category_id = dc.category_id 
+WHERE r.rental_date>='2005-08-01' AND r.rental_date<'2005-08-02' 
+GROUP BY datekey, store_id, categorykey 
+ORDER BY datekey 
+13 
+
+--- PAGE 14 ---
+Get current date 
+• Current date is frequently used in ETL as reference date 
+• E.g.,  
+– Daily job that ingests yesterday's data 
+– Weekly job that ingests last week’s data 
+• MySQL function: current_date() 
+• MySQL function: DATE_ADD() to add/minus days from date 
+14 
+
+--- PAGE 15 ---
+ 
+15 
+Example of DW with two fact tables 

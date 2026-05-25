@@ -1,0 +1,285 @@
+--- PAGE 1 ---
+SQL Aggregation 
+1 
+
+--- PAGE 2 ---
+Aggregation Query 
+• Important for decision-making questions 
+• Calculate statistics on groups 
+– Result contains statistical (aggregate) summary 
+– Calculated for each group defined by group criteria 
+• SQL keywords 
+– Aggregate functions: the aggregates that need to be calculated on groups 
+– GROUP BY: define groups 
+– HAVING: filter groups 
+2 
+
+--- PAGE 3 ---
+What is SQL Aggregation? 
+• Data Summarization 
+– Aggregation is the process of 
+performing a calculation on a set of 
+values to return a single, meaningful 
+value. 
+• Insight Generation 
+– It allows you to transform massive 
+datasets into high-level insights like 
+total revenue, average costs, or 
+customer counts. 
+• Common Use Cases 
+– Finding the total sales for the month, 
+identifying the highest-priced product, 
+or counting active users. 
+3 
+Concept: Many inputs, one summary output for each group. 
+
+--- PAGE 4 ---
+Frequently Used Aggregate Functions 
+Name Description 
+AVG() Return the average value of the argument 
+COUNT() Return a count of the number of rows returned 
+COUNT(DISTINCT) Return the count of a number of different values 
+MAX() Return the maximum value 
+MIN() Return the minimum value 
+STD() Return the population standard deviation 
+SUM() Return the sum 
+VARIANCE() Return the population standard variance 
+4 
+https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html 
+ 
+
+--- PAGE 5 ---
+Individual Rows versus Group Summaries 
+FACNO       FACRANK  FACSALARY 
+----------- ------- ---------- 
+654-32-1098 ASSC         70000  
+987-65-4321 ASSC         75000  
+876-54-3210 ASST         40000  
+098-76-5432 ASST         35000  
+765-43-2109 PROF         65000  
+543-21-0987 PROF        120000  
+SELECT FacNo, FacRank, FacSalary  
+FROM Faculty  
+ORDER BY FacRank; 
+SELECT FacRank,  
+       AVG(FacSalary) AS AvgSalary 
+  FROM Faculty  
+  GROUP BY FacRank 
+  ORDER BY FacRank; 
+FACRANK  AVGSALARY 
+------- ---------- 
+ASSC         72500 
+ASST         37500 
+PROF         92500  
+Example 1: Sort faculty by rank 
+Example 2: Compute average salary for each faculty rank 
+5 
+
+--- PAGE 6 ---
+The GROUP BY Clause 
+The GROUP BY statement organizes 
+rows that have the same values into 
+summary rows. It is the bridge 
+between raw data and aggregate 
+calculations. 
+ 
+6 
+SELECT department, COUNT(*) 
+FROM employees 
+GROUP BY department; 
+* All non-aggregated columns in the SELECT list must appear in the GROUP BY clause. 
+
+--- PAGE 7 ---
+Filtering Groups with HAVING 
+• WHERE vs. Aggregate Functions 
+– The WHERE clause filters individual 
+rows before they are grouped. It 
+cannot be used with aggregate 
+functions like SUM() or AVG(). 
+• The HAVING Clause 
+– HAVING was introduced specifically 
+to filter groups after the aggregation 
+has been performed. It allows you 
+to set conditions on the summary 
+results. 
+ 
+7 
+SELECT department, AVG(salary)  
+FROM employees  
+GROUP BY department  
+HAVING AVG(salary) > 50000; 
+ 
+-- Filters for departments where the average salary exceeds 50k 
+
+--- PAGE 8 ---
+Filtering Rows and Groups 
+STDMAJOR     AVGGPA 
+-------- ---------- 
+ACCT            3.5  
+FIN             2.8  
+IS             3.15  
+SELECT StdMajor, AVG(StdGPA) AS AvgGpa  
+ FROM Student 
+ WHERE StdClass IN ('JR', 'SR') 
+ GROUP BY StdMajor; 
+Example 3: List average GPA by major for upper class students 
+STDMAJOR     AVGGPA 
+-------- ---------- 
+ACCT            3.5  
+IS             3.15  
+Example 4: List average GPA by major for upper class students in which 
+average GPA is greater than 3.1. 
+SELECT StdMajor, AVG(StdGPA) AS AvgGpa  
+ FROM Student 
+ WHERE StdClass IN ('JR', 'SR') 
+ GROUP BY StdMajor 
+ HAVING AVG(StdGPA) > 3.1; 
+8 
+
+--- PAGE 9 ---
+Aggregation Query Examples Using World Database 
+Table Description Key Columns 
+country Information about nations. Code, Name, Continent, Population, GNP ,  
+LifeExpectancy 
+city Information about major cities. ID, Name, CountryCode, District, Population 
+countrylanguage Languages spoken in each country. CountryCode, Language, IsOfficial, Percentage 
+9 
+World database 
+
+--- PAGE 10 ---
+Find the total number of cities 
+ 
+10 
+Table Description Key Columns 
+country Information about nations. Code, Name, Continent, Population, GNP ,  
+LifeExpectancy 
+city Information about major cities. ID, Name, CountryCode, District, Population 
+countrylanguage Languages spoken in each country. CountryCode, Language, IsOfficial, Percentage 
+
+--- PAGE 11 ---
+What is the world total population and the average 
+population of the countries 
+ 
+11 
+Table Description Key Columns 
+country Information about nations. Code, Name, Continent, Population, GNP ,  
+LifeExpectancy 
+city Information about major cities. ID, Name, CountryCode, District, Population 
+countrylanguage Languages spoken in each country. CountryCode, Language, IsOfficial, Percentage 
+
+--- PAGE 12 ---
+Find the shortest and longest life expectancy 
+ 
+12 
+Table Description Key Columns 
+country Information about nations. Code, Name, Continent, Population, GNP ,  
+LifeExpectancy 
+city Information about major cities. ID, Name, CountryCode, District, Population 
+countrylanguage Languages spoken in each country. CountryCode, Language, IsOfficial, Percentage 
+
+--- PAGE 13 ---
+Find out population and country count for each 
+continent 
+ 
+13 
+Table Description Key Columns 
+country Information about nations. Code, Name, Continent, Population, GNP ,  
+LifeExpectancy 
+city Information about major cities. ID, Name, CountryCode, District, Population 
+countrylanguage Languages spoken in each country. CountryCode, Language, IsOfficial, Percentage 
+
+--- PAGE 14 ---
+Find the average population of cities within each 
+country, show the Top 10 
+ 
+14 
+Table Description Key Columns 
+country Information about nations. Code, Name, Continent, Population, GNP ,  
+LifeExpectancy 
+city Information about major cities. ID, Name, CountryCode, District, Population 
+countrylanguage Languages spoken in each country. CountryCode, Language, IsOfficial, Percentage 
+
+--- PAGE 15 ---
+List continents that have more than 30 countries 
+ 
+15 
+Table Description Key Columns 
+country Information about nations. Code, Name, Continent, Population, GNP ,  
+LifeExpectancy 
+city Information about major cities. ID, Name, CountryCode, District, Population 
+countrylanguage Languages spoken in each country. CountryCode, Language, IsOfficial, Percentage 
+
+--- PAGE 16 ---
+Calculate the total population living in cities for each 
+continent 
+ 
+16 
+Table Description Key Columns 
+country Information about nations. Code, Name, Continent, Population, GNP ,  
+LifeExpectancy 
+city Information about major cities. ID, Name, CountryCode, District, Population 
+countrylanguage Languages spoken in each country. CountryCode, Language, IsOfficial, Percentage 
+
+--- PAGE 17 ---
+How to find the percentage of population living in 
+cities in each continent? 
+ 
+17 
+
+--- PAGE 18 ---
+Query Clause Evaluation Order 
+WHERE is used to pick rows that satisfy conditions in where 
+HAVING is used to pick groups that satisfy conditions in having 
+18 
+
+--- PAGE 19 ---
+Query Formulation Process 
+Problem 
+Statement 
+ Database  
+Representation 
+SELECT 
+Statement 
+What tables? 
+Columns in result 
+Conditions to test 
+(including join conditions) 
+ 
+How to combine the tables? 
+Usually join of PK to FK 
+More complex ways to 
+combine 
+ 
+Individual rows or groups? 
+Group definition 
+Aggregate functions? 
+Conditions with aggregate 
+functions? 
+19 
+
+--- PAGE 20 ---
+Query Example 
+List the number of students enrolled in each 2017 course offering showing 
+the offer number and number of students in the result. 
+ SELECT Offering.OfferNo,  
+        COUNT(*) AS NumStudents  
+  FROM Enrollment, Offering   
+  WHERE Offering.OfferNo = Enrollment.OfferNo  
+    AND OffYear = 2017 
+  GROUP BY Offering.OfferNo; 
+20 
+
+
+--- PAGE 21 ---
+Query Example 
+List the offering number, course number, and average GPA.  Only include 
+courses offered in fall 2016 in which the average GPA is greater than 3.0.  
+SELECT Enrollment.OfferNo, CourseNo,  
+       AVG(StdGPA) AS AvgGPA 
+ FROM Offering, Enrollment, Student 
+ WHERE Offering.OfferNo = Enrollment.OfferNo 
+   AND Student.StdNo = Enrollment.StdNo 
+   AND OffYear = 2016 AND OffTerm = 'FALL'  
+ GROUP BY Enrollment.OfferNo, CourseNo 
+ HAVING AVG(StdGPA) > 3.0; 
+21 

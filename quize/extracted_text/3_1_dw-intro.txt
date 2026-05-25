@@ -1,0 +1,238 @@
+--- PAGE 1 ---
+Introduction to Data Warehouse
+1
+
+--- PAGE 2 ---
+2
+Data Warehouse and OLAP
+• Why data warehouse
+• What’s data warehouse
+• What’s dimensional data model
+• What’s difference between OLAP and OLTP
+
+--- PAGE 3 ---
+What If we build Business Intelligence Dashboard 
+directly using OLTP databases? 
+3
+
+--- PAGE 4 ---
+Benefits and Issues of BI directly on OLTP
+• Pros
+− Simple architecture
+− Always have access to latest 
+data
+− No need to invest in data 
+warehouse
+• Cons
+− The OLTP databases must 
+keep all historical data
+− Analytics queries may bring 
+down the OLTP system
+− Analytics queries need to join 
+many tables
+4
+
+--- PAGE 5 ---
+5
+Recap: Relational Database Theory
+• Relational database modeling process – normalization
+• Relations or tables are progressively decomposed into smaller relations to a 
+point where all attributes in a relation are very tightly coupled with the 
+primary key of the relation.
+− First normal form: data items are atomic.
+− Second normal form: attributes fully depend on primary key.
+− Third normal form: all non-key attributes are completely independent of 
+each other.
+
+--- PAGE 6 ---
+Recap: Relation Database Theory, cont’d
+• The process of normalization generally breaks a table into many independent 
+tables.
+• A normalized database yields a flexible model, making it easy to maintain 
+dynamic relationships between business entities.
+• A relational database system is effective and efficient for operational 
+databases – a lot of updates (aiming at optimizing update performance). 
+6
+
+--- PAGE 7 ---
+7
+Problems
+• A fully normalized data model can perform very inefficiently for analytics 
+queries.
+• Historical data are usually large with static relationships:
+− Unnecessary joins may take unacceptably long time
+• Historical data are diverse
+
+--- PAGE 8 ---
+8
+The Data Warehouse
+Data
+Warehouse
+Analytical workload
+Source SourceSource
+. . .
+Extractor/
+Monitor
+Integration System
+. . .
+Metadata
+Extractor/
+Monitor
+Extractor/
+Monitor
+• Information integrated in 
+advance
+• Stored in data warehouse 
+for direct querying and 
+analysis
+
+--- PAGE 9 ---
+9
+Advantages of Warehousing Approach
+• High query performance
+− But not necessarily most current information
+• Doesn’t interfere with business processing at data sources
+− Complex queries at warehouse
+− OLTP at information sources
+• Information copied at warehouse
+− Can modify, annotate, summarize,  restructure, etc.
+− Can store historical information
+− Security, no auditing
+
+--- PAGE 10 ---
+10
+A Data Warehouse is...
+• Stored collection of diverse data
+− A solution to data integration problem
+− Single repository of information
+• Subject-oriented
+− Organized by subject, not by application
+− Used for analysis, data mining, etc.
+• Optimized differently from transaction-oriented databases
+• User interface aimed at executive
+
+--- PAGE 11 ---
+11
+… Cont’d
+• Large volume of data (Gb, Tb)
+• Non-volatile
+− Historical
+− Time attributes are important
+• Updates infrequent
+• May be append-only
+• Examples
+− All transactions ever at NTUC FairPrice
+− Complete client histories at insurance firm
+− A Bank's financial information and portfolios
+
+--- PAGE 12 ---
+Enterprise Architecture for Data Warehouse and 
+Business Intelligence
+image source: http://4.bp.blogspot.com/-RhSkZIrrDpc/UcFsUzu4M2I/AAAAAAAABoA/jQ5VBr8lIRg/s1600/oltp -vs-olap.jpg 12
+
+--- PAGE 13 ---
+13
+Major Tasks in Data Warehousing
+• Warehouse Design
+• Extraction
+− Wrappers, monitors (change detectors)
+• Integration
+− Cleansing & merging
+• Warehousing specification & Maintenance
+• Optimizations
+• Miscellaneous (e.g., evolution)
+
+--- PAGE 14 ---
+14
+• OLTP: On Line Transaction Processing
+− Describes processing at operational sites
+• OLAP: On Line Analytical Processing
+− Describes processing at warehouse
+OLTP vs. OLAP
+
+--- PAGE 15 ---
+15
+Warehouse is a Specialized DB
+Standard DB (OLTP)
+• Mostly updates
+• Normalized design
+• Many small transactions
+• Mb - Gb of data
+• Current snapshot
+• Index/hash on primary key
+• Raw data
+• Thousands to millions of users (e.g., 
+clerical users, app users)
+Warehouse (OLAP)
+• Mostly reads
+• Denormalized design
+• Queries are long and complex
+• Gb - Tb of data
+• Full History
+• Lots of scans
+• Summarized, reconciled data
+• Hundreds of users (e.g., analysts , decision-
+makers)
+
+--- PAGE 16 ---
+16
+Decision Support
+• Information technology to help the knowledge worker (executive, manager, 
+analyst) make faster & better decisions
+− “What were the sales volumes by region and product category for the last year?”
+− “How did the share price of comp. manufacturers correlate with quarterly profits 
+over the past 10 years?”
+− “Which orders should we fill to maximize revenues?”
+• On-line analytical processing (OLAP) is an element of decision support 
+systems (DSS)
+
+--- PAGE 17 ---
+Data Mart
+• A data mart is a subset of the data warehouse and is usually oriented 
+to a specific business line or team.
+• Examples:
+− Data mart for HR
+− Data mart for Finance
+− Data mart for Business Group 1
+− Data mart for Business Group 2
+− …
+17
+
+--- PAGE 18 ---
+Data Mart in Data Warehouse
+18
+
+--- PAGE 19 ---
+Data Warehouse vs. Data Marts
+• Enterprise warehouse: collects all information about subjects 
+(customers,products,sales,assets, personnel) that span 
+the entire organization
+− Requires extensive business modeling (may take years to design and 
+build)
+• Data Marts: Departmental subsets that focus on selected subjects
+− Marketing data mart: customer, product, sales
+− Faster roll out, but complex integration in the long run
+19
+
+--- PAGE 20 ---
+20
+OLAP for Decision Support 
+• OLAP = Online Analytical Processing
+• Support (almost) ad-hoc querying for business analyst
+• Think in terms of spreadsheets
+− View sales data by geography, time, or product
+• Extend spreadsheet analysis model to work with warehouse data
+− Large data sets
+− Semantically enriched to understand business terms
+− Combine interactive queries with reporting functions
+• Dimensional view of data is the foundation of OLAP
+− Data model, operations, etc.
+
+--- PAGE 21 ---
+What about Data Lake?
+• Database 
+• Data Warehouse 
+− Data Mart
+• Data Lake
+21
+video

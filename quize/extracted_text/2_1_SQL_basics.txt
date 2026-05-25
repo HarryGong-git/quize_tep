@@ -1,0 +1,410 @@
+--- PAGE 1 ---
+SQL: STRUCTURED QUERY LANGUAGE 
+1 
+
+--- PAGE 2 ---
+Major SQL Statements 
+Statement Statement Type 
+CREATE TABLE Definitional, Control 
+CREATE VIEW Definitional 
+CREATE TYPE Definitional 
+SELECT Manipulation 
+INSERT, UPDATE, DELETE Manipulation 
+COMMIT, ROLLBACK Manipulation 
+CREATE TRIGGER Control, Manipulation 
+GRANT, REVOKE Control 
+2 
+
+--- PAGE 3 ---
+SQL Conformance 
+• No official conformance testing 
+• Vendor claims about conformance 
+• Reasonable conformance on Core SQL 
+• Large variance on conformance outside of Core SQL 
+• Difficult to write portable SQL code outside of Core SQL 
+3 
+https://en.wikipedia.org/wiki/SQL 
+ 
+
+--- PAGE 4 ---
+DATA TYPE 
+4 
+
+--- PAGE 5 ---
+Common SQL Data Types 
+• CHAR(L) 
+• VARCHAR(L) 
+• INTEGER 
+• FLOAT(P) 
+• DECIMAL(W , R) 
+• Date/Time: DATE, TIME, TIMESTAMP 
+• BOOLEAN 
+• BLOB (Binary Large Object) 
+5 
+
+--- PAGE 6 ---
+Float vs Decimal 
+6 
+⚠  Floating-Point 
+Stores numbers in binary 
+Causes rounding errors 
+0.1 + 0.2 = 0.30000000000000004 
+✓ DECIMAL 
+Stores numbers in exact base-10 
+No rounding errors 
+DECIMAL(10,2)  
+10 = precision → total number of 
+digits allowed 
+2 = scale → number of digits after 
+the decimal point 
+E.g., 12345678.90 
+When to Use: Money, Accounting, Precise Measurements 
+Use DECIMAL when accuracy matters 
+Try it in Python. 
+
+
+--- PAGE 7 ---
+MySQL Data Types 
+7 Image source: https://www.mysqltutorial.org/wp-content/uploads/0211/03/MySQL-Data-Types.jpg 
+
+--- PAGE 8 ---
+CREATE TABLE 
+8 
+
+--- PAGE 9 ---
+CREATE TABLE Syntax 
+• CREATE TABLE <table-name> ( <column-list> [<constraint-list>] ) 
+• Column list with data types and optional and inline constraints 
+• Optional external constraint list 
+– CONSTRAINT [ ConstraintName ] <Constraint-Spec> 
+– Primary key 
+– Foreign key 
+– Unique 
+– Check 
+ 
+9 
+
+--- PAGE 10 ---
+CREATE TABLE Statement Example 
+CREATE TABLE Student 
+( StdNo   CHAR(11), 
+  StdFirstName  VARCHAR(50), 
+  StdLastName  VARCHAR(50), 
+  StdCity  VARCHAR(50), 
+  StdState  CHAR(2), 
+  StdZip  CHAR(10), 
+  StdMajor        CHAR(6), 
+  StdClass        CHAR(6), 
+  StdGPA  DECIMAL(3,2) ); 
+ 
+10 
+
+--- PAGE 11 ---
+Constraint Syntax Examples 
+• CONSTRAINT PKCourse PRIMARY KEY(CourseNo) 
+• CONSTRAINT PKEnrollment PRIMARY KEY (OfferNo, StdNo) 
+• CONSTRAINT UniqueCrsDesc UNIQUE (CrsDesc) 
+• CONSTRAINT FKOfferNo FOREIGN KEY (OfferNo) REFERENCES Offering 
+• CONSTRAINT OffCourseNoReq NOT NULL 
+11 
+
+--- PAGE 12 ---
+Constraint Example 
+CREATE TABLE Course 
+(  CourseNo  CHAR(6), 
+   CrsDesc VARCHAR(250), 
+ CrsUnits SMALLINT,  
+ CONSTRAINT PKCourse PRIMARY KEY(CourseNo), 
+ CONSTRAINT UniqueCrsDesc UNIQUE (CrsDesc) )  
+12 
+
+--- PAGE 13 ---
+Inline Constraint Placement 
+CREATE TABLE Offering 
+( OfferNo  INTEGER, 
+  CourseNo CHAR(6) CONSTRAINT OffCourseNoReq NOT NULL, 
+  OffLocation  VARCHAR(50), 
+  OffDays   CHAR(6), 
+  OffTerm        CHAR(6) CONSTRAINT OffTermReq NOT NULL, 
+  OffYear   INTEGER CONSTRAINT OffYearReq NOT NULL, 
+  FacNo  CHAR(11), 
+  OffTime   DATE, 
+CONSTRAINT PKOffering PRIMARY KEY (OfferNo), 
+CONSTRAINT FKCourseNo FOREIGN KEY (CourseNo) REFERENCES Course, 
+CONSTRAINT FKFacNo FOREIGN KEY (FacNo) REFERENCES Faculty ); 
+13 
+
+--- PAGE 14 ---
+Quick Exercise 
+• Design a table 
+• Write CREATE statement 
+ 
+• Exercise, create customer table, customer id, name, type of id document, id 
+number, date of birth, annual income, occupation. Customer id is the primary key, 
+Name cannot be empty, type of id can only be NRIC or Passport, id number has to 
+be unique. 
+14 
+Exercise 
+
+--- PAGE 15 ---
+SQL INSERT, UPATE, DELETE 
+15 
+
+--- PAGE 16 ---
+SQL Insert a row 
+INSERT INTO table_name (column1, column2, column3, ...) 
+VALUES (value1, value2, value3, ...); 
+16 
+
+--- PAGE 17 ---
+SQL INSERT Example 
+Example: Insert a row into the Student table supplying values for all 
+columns. 
+INSERT INTO Student  
+ (StdNo, StdFirstName, StdLastName, StdCity, StdState, 
+StdZip, StdClass, StdMajor, StdGPA)  
+ VALUES ('999-99-9999','JOE','STUDENT','SEATAC', 'WA', 
+'98042-1121','FR','IS', 0.0);  
+17 
+
+--- PAGE 18 ---
+Update some value(s) in a row 
+UPDATE table_name 
+SET column1 = value1, column2 = value2, ... 
+WHERE condition; 
+18 
+
+--- PAGE 19 ---
+SQL UPDATE Example 
+Example: Change the major and class of Joe Student. 
+UPDATE Student  
+ SET StdMajor = 'ACCT',  
+     StdClass = 'SO'  
+ WHERE StdFirstName = 'JOE'  
+   AND StdLastName = 'STUDENT';  
+19 
+
+--- PAGE 20 ---
+Delete a row or a set of rows 
+DELETE FROM table_name WHERE condition; 
+20 
+
+--- PAGE 21 ---
+SQL DELETE Example 
+Example: Delete Joe Student in the Student table. 
+DELETE FROM Student  
+ WHERE StdFirstName = 'JOE'  
+   AND StdLastName = 'STUDENT';  
+21 
+
+--- PAGE 22 ---
+Quick Exercise 
+• Insert 
+• Update 
+• Delete 
+22 
+Exercise 
+
+--- PAGE 23 ---
+SQL SELECT 
+23 
+
+--- PAGE 24 ---
+SELECT Statement Overview 
+SELECT  <list of column expressions> 
+FROM  <list of tables and join operations> 
+WHERE  <list of logical expressions for rows> 
+ORDER BY  <list of sorting specifications> 
+ 
+• Column expression: combination of columns, constants, operators, and functions 
+– Example: FacSalary * 1.1 
+ 
+• Logical expression: conditions connected by AND, OR, and NOT 
+– Example: OffTerm = 'FALL' AND OffYear = 2016 
+ 
+24 
+
+--- PAGE 25 ---
+University 
+Database Diagram 
+25 
+
+--- PAGE 26 ---
+Simple SELECT Examples 
+Example 1 
+ SELECT * FROM Faculty; 
+ 
+Example 2 
+ SELECT * 
+  FROM Faculty 
+  WHERE FacNo = '543-21-0987'; 
+ 
+Example 3 
+ SELECT FacFirstName, FacLastName, FacSalary 
+  FROM Faculty 
+  WHERE FacSalary > 65000 AND FacRank = 'PROF'; 
+ 
+Example 4 
+ SELECT FacCity, FacState 
+  FROM Faculty; 
+ 
+ SELECT DISTINCT FacCity, FacState 
+  FROM Faculty; 
+   
+26 
+
+--- PAGE 27 ---
+Using Expressions 
+Example 5 (Oracle) 
+SELECT FacFirstName, FacLastName, FacCity,  
+       FacSalary*1.1 AS IncreasedSalary,  
+       FacHireDate  
+ FROM Faculty  
+ WHERE to_number(to_char(FacHireDate, 'YYYY')) > 2005; 
+ 
+Example 5 (MySQL) 
+ SELECT FacFirstName, FacLastName, FacCity,  
+        FacSalary*1.1 AS IncreasedSalary,  
+        FacHireDate  
+  FROM Faculty  
+  WHERE (date_format(FacHireDate, '%Y')) > 2005; 
+ 
+27 
+https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html 
+ 
+
+--- PAGE 28 ---
+Text Pattern Matching 
+• Use LIKE operator to match against a pattern 
+• Use meta characters to specify patterns 
+― Wildcard (%)  
+― Any single character (_) 
+Example 6 
+ 
+SELECT *  
+  FROM Offering  
+  WHERE CourseNo LIKE ‘MH%’; 
+ 
+SELECT *  
+  FROM Offering  
+  WHERE CourseNo LIKE ‘MH634_'; 
+ 
+28 
+
+--- PAGE 29 ---
+Using Date Constants 
+• Dates are numbers 
+• Date constants and functions are not standard 
+ 
+Example 7 (Oracle) 
+SELECT FacFirstName, FacLastName, FacHireDate  
+ FROM Faculty  
+ WHERE FacHireDate BETWEEN '1-Jan-2008'  
+   AND '31-Dec-2009'; 
+ 
+Example 7 (MySQL) 
+SELECT FacFirstName, FacLastName, FacHireDate  
+ FROM Faculty  
+ WHERE FacHireDate BETWEEN '2008-01-01' 
+   AND '2009-12-31'; 
+ 
+29 
+https://dev.mysql.com/doc/refman/8.4/en/date-and-time-functions.html 
+
+--- PAGE 30 ---
+Combining Conditions 
+Example 8: Testing for null values 
+ SELECT OfferNo, CourseNo  
+  FROM Offering  
+  WHERE FacNo IS NULL AND OffTerm = 'SUMMER'  
+    AND OffYear = 2017; 
+ 
+Example 9: Mixing AND and OR 
+ SELECT OfferNo, CourseNo, FacNo  
+  FROM Offering  
+  WHERE (OffTerm = 'FALL' AND OffYear = 2016)  
+     OR (OffTerm = 'WINTER' AND OffYear = 2017); 
+30 
+Conditions can be combined using logical operators: AND, OR, and NOT 
+
+--- PAGE 31 ---
+ORDER BY 
+DISTINCT 
+LIMIT 
+ 
+31 
+
+--- PAGE 32 ---
+Order by 
+SELECT <list of column expressions> 
+FROM <list of tables and join operations> 
+WHERE <list of logical expressions for rows> 
+ORDER BY <list of sorting specifications> 
+ 
+ 
+SELECT payment_id, customer_id, rental_id, amount  
+FROM sakila.payment 
+ORDER BY amount DESC; 
+32 
+
+--- PAGE 33 ---
+Order by  
+• ORDER BY column_name DESC|ASC 
+• Use DESC to specify decreasing order 
+• Use ASC to specify increasing order 
+• If not given, default is ASC 
+ 
+SELECT payment_id, customer_id, rental_id,  
+ amount, payment_date  
+FROM sakila.payment 
+WHERE amount> 0 
+ORDER BY payment_date; 
+33 
+
+--- PAGE 34 ---
+Distinct 
+• The DISTINCT keywoard is used to return 
+only distinct (different) values. 
+• Inside a table, a column often contains 
+many duplicate values; and sometimes 
+you only want to list the different 
+(distinct) values. 
+ 
+SELECT amount 
+FROM sakila.payment 
+ORDER BY amount DESC; 
+SELECT DISTINCT amount 
+FROM sakila.payment 
+ORDER BY amount DESC; 
+34 
+
+--- PAGE 35 ---
+Limit 
+• LIMIT keyword can be used to specify the number of records to 
+return. 
+• LIMIT is useful on large tables. Returning a large number of records 
+can impact query performance. 
+• In some databases the keyword is TOP 
+SELECT DISTINCT amount 
+FROM sakila.payment 
+ORDER BY amount DESC 
+LIMIT 5; 
+SELECT *  
+FROM sakila.payment 
+LIMIT 3 
+35 
+
+--- PAGE 36 ---
+SQL Keywords reference 
+• https://www.w3schools.com/sql/sql_ref_keywords.asp 
+ 
+• https://dev.mysql.com/doc/mysqld-version-reference/en/keywords-8-0.html 
+36 
+
+--- PAGE 37 ---
+Quick Exercise 
+• Select 
+• Condition 
+• Find top x 
+37 
+Exercise 

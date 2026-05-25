@@ -1,0 +1,146 @@
+--- PAGE 1 ---
+SQL Join 
+1 
+
+--- PAGE 2 ---
+Join 
+• Most databases have many tables 
+• Related data are stored in different tables 
+• SQL JOIN is used to combine rows from two or more tables based on related column(s) 
+between them.  
+• It’s one of the core concepts in relational databases.  
+ 
+• Specify join condition 
+– Can be any comparison but usually = 
+– PK = FK most common join condition 
+– ER diagram useful when combining tables 
+2 
+
+--- PAGE 3 ---
+Types of Join 
+Join Type What it does 
+INNER JOIN Only matching rows 
+LEFT JOIN All left + matches 
+RIGHT JOIN All right + matches 
+FULL JOIN All rows from both 
+CROSS JOIN All combinations 
+SELF JOIN Table joined with itself 
+3 
+
+--- PAGE 4 ---
+Inner Join 
+4 
+SELECT columns 
+FROM table1 INNER JOIN table2 
+ ON table1.common_column = table2.common_column; 
+
+--- PAGE 5 ---
+Specifying Join Condition Using JOIN in FROM 
+Clause 
+• Use INNER JOIN and ON keywords 
+• FROM clause contains join operations 
+SELECT OfferNo, CourseNo, FacFirstName, FacLastName   
+ FROM Offering INNER JOIN Faculty  
+   ON Faculty.FacNo = Offering.FacNo 
+ WHERE OffTerm = 'FALL' AND OffYear = 2016  
+   AND FacRank = 'ASST' AND CourseNo LIKE 'IS%'; 
+ 
+5 
+Preferred way of writing join statement. 
+
+
+--- PAGE 6 ---
+Specifying Join Condition in WHERE Clause 
+• List tables in the FROM clause 
+• List join conditions in the WHERE clause 
+SELECT OfferNo, CourseNo, FacFirstName, 
+FacLastName  
+ FROM Offering, Faculty  
+ WHERE OffTerm = 'FALL' AND OffYear = 2016  
+   AND FacRank = 'ASST' AND CourseNo LIKE 'IS%' 
+   AND Faculty.FacNo = Offering.FacNo; 
+6 
+Recognize filter condition and join condition 
+
+
+--- PAGE 7 ---
+Join More than two Tables 
+Example: List Leonard Vince’s teaching schedule in fall 2016.  For each course, list the 
+offering number, course number, number of units, days, location, and time.  
+SELECT OfferNo, Offering.CourseNo, OffDays, 
+       CrsUnits, OffLocation, OffTime 
+ FROM Offering INNER JOIN Course  
+   ON Offering.CourseNo = Course.CourseNo 
+   INNER JOIN Faculty ON Offering.FacNo = Faculty.FacNo 
+ WHERE OffYear = 2016 AND OffTerm = 'FALL'   
+   AND FacFirstName = 'LEONARD'  
+   AND FacLastName = 'VINCE'; 
+7 
+
+
+--- PAGE 8 ---
+More Joins 
+ 
+8 
+
+--- PAGE 9 ---
+ Also known as Cross Join 
+ No join condition 
+ Return all pairs of records 
+ 
+ Expensive and dangerous! 
+ 
+Cartesian join 
+9 
+
+
+--- PAGE 10 ---
+ Join based on common values 
+ Most frequently used join 
+Inner Join 
+10 
+
+
+--- PAGE 11 ---
+ Also known as Left Outer Join 
+ 
+ Keep all records from the left 
+ Add right columns 
+ 
+Left Join 
+11 
+
+
+--- PAGE 12 ---
+ Returns all records when 
+there is a match in left 
+(table1) or right (table2) 
+Full outer join 
+12 
+
+
+--- PAGE 13 ---
+Natural Join 
+• Requirements 
+– Equality matching condition 
+– Matching columns with the same names 
+– Remove one join column in the result 
+• Usually performed on PK-FK join columns 
+13 
+
+--- PAGE 14 ---
+ Creates an implicit join clause 
+based on the common columns 
+in the two tables.  
+ Common columns are columns 
+that have the same name in 
+both tables. 
+ Don’t use. 
+Natural join 
+14 
+
+
+--- PAGE 15 ---
+ 
+15 
+Join examples slides 

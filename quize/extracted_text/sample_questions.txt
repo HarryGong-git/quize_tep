@@ -1,0 +1,66 @@
+--- PAGE 1 ---
+1 
+ 
+What is Primary Key and what is Foreign Key? 
+ 
+Is the following statement correct? Why? “Data warehouse has less data than operational database 
+because it only contains summaried data.” 
+ 
+What is ETL? What is the data staging area in ETL? Why is data staging area needed? 
+ 
+Write CREATE statement to create customer table: customer id, name, type of id document, id number, 
+date of birth, annual income, occupation. 
+ 
+Question 5: below are the structures of a Customer table and a Transaction table. The Customer table 
+contains the information of customers. The Transaction table contains transactions made by customers 
+in merchants. A mapping table for merchant category is also provided. 
+Table Name: Customer 
+Column Name Column Type Description 
+Identifier String Unique identifier of the Customer 
+FirstName String First name of Customer 
+MiddleName String Middle name of Customer 
+LastName String Last name of Customer 
+Gender Boolean Gender of Customer 
+DateOfBirth Date Date of birth of Customer 
+HomeAddress String Home address of the Customer 
+HomePostalCode String Home postal code of the Customer 
+WorkAddress String Work address of the Customer 
+WorkPostalCode String Work postal code of the Customer 
+JoinDate Date The date when the customer became a customer 
+of the company 
+ 
+Table Name: Transaction 
+Column Name Column Type Description 
+
+--- PAGE 2 ---
+2 
+ 
+Identifier Long Unique identifier of the transaction 
+CustomerID String Identifier of customer 
+TransDatetime DateTime Transaction date and time 
+MerchantName String Name of the merchant 
+MerchantCategoryCode Integer The code indicating the category of the merchant 
+TransactionAmount Double The amount of the transaction 
+PaymentMethod String Payment method such as Cash, NETs, CreditCard, 
+DebitCard 
+ 
+Table Name: MerchantCategory 
+Column Name Column Type Description 
+MerchantCategoryCode Integer A code indicating merchant category 
+MerchantCategoryName String The name of the merchant category 
+ 
+Example content of MerchantCategory: 
+MerchantCategoryCode MerchantCategoryName 
+31 Apparel 
+41 Restaurant 
+51 Coffee & Tea shop 
+… … 
+ 
+Question 5A, SQL: Find the top five “Cash” transactions based on transaction amount (the higher the 
+better). Display only transaction Date and time, merchant name, and amount. 
+ 
+Question 5B, SQL: Find the number of transactions for each merchant category code in the period from 
+2019 July 1 to 2019 Sep 30. Display merchant category name, number of transactions, and total amount.  
+ 
+Question 5C, SQL: For each customer, find their most recent three transactions. Display customer 
+identifier, first name, last name, when he/she became customer, and these three transactions’ details. 

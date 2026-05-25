@@ -1,0 +1,269 @@
+--- PAGE 1 ---
+SQL Join Examples 
+1 
+
+--- PAGE 2 ---
+ 
+2 
+
+--- PAGE 3 ---
+Tables 
+customer_id account_number balance 
+1 A1 672 
+2 A2 1793 
+3 A3 8266 
+4 A4 9232 
+7 A7 3712 
+customer_id card_number spend 
+2 C2 845 
+3 C3 782 
+5 C5 3286 
+6 C6 4827 
+Deposit 
+CreditCard 
+3 
+
+--- PAGE 4 ---
+customer_id account_number balance customer_id card_number spend 
+1 A1 672 2 C2 845 
+1 A1 672 3 C3 782 
+1 A1 672 5 C5 3286 
+1 A1 672 6 C6 4827 
+2 A2 1793 2 C2 845 
+2 A2 1793 3 C3 782 
+2 A2 1793 5 C5 3286 
+2 A2 1793 6 C6 4827 
+3 A3 8266 2 C2 845 
+3 A3 8266 3 C3 782 
+3 A3 8266 5 C5 3286 
+3 A3 8266 6 C6 4827 
+4 A4 9232 2 C2 845 
+4 A4 9232 3 C3 782 
+4 A4 9232 5 C5 3286 
+4 A4 9232 6 C6 4827 
+7 A7 3712 2 C2 845 
+7 A7 3712 3 C3 782 
+7 A7 3712 5 C5 3286 
+7 A7 3712 6 C6 4827 
+customer_id account_number balance 
+1 A1 672 
+2 A2 1793 
+3 A3 8266 
+4 A4 9232 
+7 A7 3712 
+customer_id card_number spend 
+2 C2 845 
+3 C3 782 
+5 C5 3286 
+6 C6 4827 
+Deposit 
+CreditCard 
+SELECT * 
+FROM deposit, creditcard 
+Full Join 
+4 
+
+--- PAGE 5 ---
+customer_id account_number balance 
+1 A1 672 
+2 A2 1793 
+3 A3 8266 
+4 A4 9232 
+7 A7 3712 
+customer_id card_number spend 
+2 C2 845 
+3 C3 782 
+5 C5 3286 
+6 C6 4827 
+Deposit 
+CreditCard 
+SELECT * 
+FROM deposit d, creditcard c 
+WHERE d.customer_id = c.customer_id 
+customer_id account_number balance customer_id card_number spend 
+2 A2 1793 2 C2 845 
+3 A3 8266 3 C3 782 
+Inner Join 
+5 
+
+--- PAGE 6 ---
+customer_id account_number balance 
+1 A1 672 
+2 A2 1793 
+3 A3 8266 
+4 A4 9232 
+7 A7 3712 
+customer_id card_number spend 
+2 C2 845 
+3 C3 782 
+5 C5 3286 
+6 C6 4827 
+Deposit 
+CreditCard 
+SELECT * 
+FROM deposit d LEFT JOIN creditcard c   
+ON d.customer_id = c.customer_id 
+customer_id account_number balance customer_id card_number spend 
+2 A2 1793 2 C2 845 
+3 A3 8266 3 C3 782 
+1 A1 672 NULL NULL NULL 
+4 A4 9232 NULL NULL NULL 
+7 A7 3712 NULL NULL NULL 
+Left Join 
+6 
+
+--- PAGE 7 ---
+customer_id account_number balance 
+1 A1 672 
+2 A2 1793 
+3 A3 8266 
+4 A4 9232 
+7 A7 3712 
+customer_id card_number spend 
+2 C2 845 
+3 C3 782 
+5 C5 3286 
+6 C6 4827 
+Deposit 
+CreditCard 
+SELECT * 
+FROM deposit d LEFT outer JOIN creditcard c   
+ON d.customer_id = c.customer_id 
+customer_id account_number balance customer_id card_number spend 
+2 A2 1793 2 C2 845 
+3 A3 8266 3 C3 782 
+1 A1 672 NULL NULL NULL 
+4 A4 9232 NULL NULL NULL 
+7 A7 3712 NULL NULL NULL 
+Left Outer Join 
+7 
+
+--- PAGE 8 ---
+customer_id account_number balance 
+1 A1 672 
+2 A2 1793 
+3 A3 8266 
+4 A4 9232 
+7 A7 3712 
+customer_id card_number spend 
+2 C2 845 
+3 C3 782 
+5 C5 3286 
+6 C6 4827 
+Deposit 
+CreditCard 
+SELECT * 
+FROM deposit d LEFT JOIN creditcard c   
+ON d.customer_id = c.customer_id 
+WHERE c.customer_id is NULL 
+customer_id account_number balance customer_id card_number spend 
+1 A1 672 NULL NULL NULL 
+4 A4 9232 NULL NULL NULL 
+7 A7 3712 NULL NULL NULL 
+Left Join, Non matching records 
+8 
+
+--- PAGE 9 ---
+customer_id account_number balance 
+1 A1 672 
+2 A2 1793 
+3 A3 8266 
+4 A4 9232 
+7 A7 3712 
+customer_id card_number spend 
+2 C2 845 
+3 C3 782 
+5 C5 3286 
+6 C6 4827 
+Deposit 
+CreditCard 
+SELECT * 
+FROM deposit d RIGHT JOIN creditcard c   
+ON d.customer_id = c.customer_id 
+customer_id account_number balance customer_id card_number spend 
+2 A2 1793 2 C2 845 
+3 A3 8266 3 C3 782 
+NULL NULL NULL 5 C5 3286 
+NULL NULL NULL 6 C6 4827 
+Right Join 
+9 
+
+--- PAGE 10 ---
+customer_id account_number balance 
+1 A1 672 
+2 A2 1793 
+3 A3 8266 
+4 A4 9232 
+7 A7 3712 
+customer_id card_number spend 
+2 C2 845 
+3 C3 782 
+5 C5 3286 
+6 C6 4827 
+Deposit 
+CreditCard 
+SELECT * 
+FROM deposit d RIGHT JOIN creditcard c   
+ON d.customer_id = c.customer_id 
+WHERE d.customer_id is NULL 
+customer_id account_number balance customer_id card_number spend 
+NULL NULL NULL 5 C5 3286 
+NULL NULL NULL 6 C6 4827 
+Right Join, Non matching  records 
+10 
+
+--- PAGE 11 ---
+customer_id account_number balance 
+1 A1 672 
+2 A2 1793 
+3 A3 8266 
+4 A4 9232 
+7 A7 3712 
+customer_id card_number spend 
+2 C2 845 
+3 C3 782 
+5 C5 3286 
+6 C6 4827 
+Deposit 
+CreditCard 
+SELECT * 
+FROM deposit d full outer JOIN creditcard c   
+ON d.customer_id = c.customer_id 
+Full outer Join, does not work ON MySQL 
+Error Code: 1064. You have an error in your 
+SQL syntax; check the manual that corresponds 
+to your MySQL server version for the RIGHT 
+syntax to use near 'full outer JOIN creditcard c   
+ON d.customer_id = c.customer_id WHERE 
+c.customer' at line 2 
+11 
+
+--- PAGE 12 ---
+customer_id account_number balance 
+1 A1 672 
+2 A2 1793 
+3 A3 8266 
+4 A4 9232 
+7 A7 3712 
+customer_id card_number spend 
+2 C2 845 
+3 C3 782 
+5 C5 3286 
+6 C6 4827 
+Deposit 
+CreditCard 
+SELECT * 
+FROM deposit d LEFT JOIN creditcard c ON d.customer_id = c.customer_id 
+UNION 
+SELECT * 
+FROM deposit d RIGHT JOIN creditcard c ON d.customer_id = c.customer_id 
+customer_id account_number balance customer_id card_number spend 
+2 A2 1793 2 C2 845 
+3 A3 8266 3 C3 782 
+1 A1 672 NULL NULL NULL 
+4 A4 9232 NULL NULL NULL 
+7 A7 3712 NULL NULL NULL 
+NULL NULL NULL 5 C5 3286 
+NULL NULL NULL 6 C6 4827 
+Use UNION to achieve FULL Outer Join 
+12 

@@ -1,0 +1,382 @@
+--- PAGE 1 ---
+ETL (Extract, Transform, Load) 
+1 
+
+--- PAGE 2 ---
+ETL moves data into Data Warehouse 
+ 
+2 
+
+--- PAGE 3 ---
+Data Warehouse Architecture 
+ 
+Generally configured for queries and 
+appends – not transactions 
+Many indices, materialized views, etc. 
+Data is loaded and periodically 
+updated via Extract/Transform/Load 
+(ETL) tools 
+3 
+
+--- PAGE 4 ---
+ETL (in Real World) is Challenging 
+• Developing the ETL system is challenging because so many outside constraints put 
+pressure on its design:  
+– the business requirements,  
+– source data realities,  
+– budget,  
+– processing windows,  
+– skill sets of the available staff.  
+• Yet it can be hard to appreciate just why the ETL system is so complex and 
+resource-intensive. 
+ 
+• A lot of freedom in the design, tools, and implementation 
+4 
+
+--- PAGE 5 ---
+High Level Requirements (Constraints) 
+• Business Needs 
+– maintain a list of the key performance indicators (KPIs) 
+• Compliance 
+– especially in regulated businesses 
+• Data Quality 
+– accurate data 
+• Security 
+– need to balance between efficiency and security 
+• Data Integration 
+– conforming dimensions and conforming facts 
+ 
+5 
+
+--- PAGE 6 ---
+High Level Requirements (Constraints) 
+• Data Latency 
+– how quickly source system data must be delivered to the business users via the 
+DW/BI system 
+• Archiving and Lineage 
+– staging the data (writing it to disk) after each major activity of the ETL pipeline 
+• BI Delivery Interfaces 
+– the ETL team, working closely with the modeling team, must take responsibility for 
+the content and structure of the data that makes the BI applications simple and 
+fast 
+• Available Skills 
+– whether to hand code the ETL system or use a vendor’s ETL package 
+• Legacy Licenses 
+– major design decisions will be made implicitly by senior management’s insistence 
+that you use existing legacy licenses 
+6 
+
+--- PAGE 7 ---
+ETL Tools 
+• ETL tools are the equivalent of schema mappings, but are more powerful 
+• Pieces of code to take data from a source, convert it into data for the warehouse: 
+– import filters – read and convert from data sources 
+– data transformations – join, aggregate, filter, convert data 
+– de-duplication – finds multiple records referring to the same entity, merges 
+them 
+– profiling – builds tables, histograms, etc. to summarize data 
+– quality management – test against master values, known business rules, 
+constraints, etc. 
+7 
+
+--- PAGE 8 ---
+8 
+Extract-Transform-Load (ETL) 
+Sources Data Staging Area (DSA) DW 
+Extract Transform 
+& Clean 
+Load 
+
+--- PAGE 9 ---
+9 
+Prepare for ETL 
+• Early stages of the DW design : 
+– Concepts are still fuzzy and changing frequently  
+– Lots of interviews with people 
+– No time for a full, clean-cut definition of the DW and the ETL 
+workflow 
+• Still, we can: 
+– Trace the mapping of the attributes of the data sources to the 
+attributes of the DW tables 
+– Trace necessary constraints and transformations for the ETL 
+process 
+
+--- PAGE 10 ---
+Data Staging Area (DSA) 
+• Transit storage for data underway in the ETL process  
+– Transformations/cleansing done here  
+• No user queries (some do it)  
+• Sequential operations (few) on large data volumes  
+– Performed by central ETL logic  
+– Easily restarted  
+– No need for locking, logging, etc.  
+– RDBMS or flat files? (DBMS have become better at this)  
+• Finished dimensions copied from DSA to relevant marts 
+10 
+
+--- PAGE 11 ---
+Building Dimensions 
+• Static dimension table 
+– Relatively easy 
+– Assignment of keys: production keys to DW keys using mapping table 
+– Combination of data sources: find common key 
+• Handling dimension changes 
+– Find newest DW key for a given production key 
+– Table for mapping production keys to DW keys must be updated 
+• Load of dimensions 
+– Small dimensions: replace 
+– Large dimensions: load only changes 
+11 
+
+--- PAGE 12 ---
+Building Fact Tables 
+• Two types of load 
+• Initial load 
+– ETL for all data up till now 
+– Done when DW is started the first time 
+– Often problematic to get correct historical data 
+– Very heavy - large data volumes 
+• Incremental update 
+– Move only changes since last load 
+– Done periodically (../month/week/day/hour/...) after DW start 
+– Less heavy - smaller data volumes 
+• Dimensions must be updated before facts 
+– The relevant dimension rows for new facts must be in place 
+– Special key considerations if initial load must be performed again 
+12 
+
+--- PAGE 13 ---
+E - Extract 
+• Goal: fast extract of relevant data 
+– Extract from source systems can take a long time 
+• Types of extracts: 
+– Extract applications (SQL): co-existence with other applications 
+– DB unload tools: much faster than SQL-based extracts 
+– Extract applications sometimes the only solution 
+• Often too time consuming to ETL all data at each load 
+– Extracts can take days/weeks 
+– Drain on the operational systems 
+– Drain on DW systems 
+– => Extract/ETL only changes since last load (delta) 
+13 
+
+--- PAGE 14 ---
+T – Data Transformations 
+• Data type conversions 
+– EBCDIC->ASCII/UniCode 
+– String manipulations 
+– Date/time format conversions 
+• Normalization/denormalization 
+– To the desired DW format 
+– Depending on source format 
+• Building keys 
+– Table that maps production keys to surrogate DW keys 
+– Observe correct handling of history - especially for total reload 
+14 
+
+--- PAGE 15 ---
+L - Load 
+• Goal: fast loading into DW 
+– Loading deltas is much faster than total load 
+• SQL-based update is slow 
+– Large overhead (optimization, locking, etc.) for every SQL call 
+– DB load tools are much faster 
+– Some load tools can also perform UPDATEs 
+• Index on tables slows load a lot 
+– Drop index and rebuild after load 
+– Can be done per partition 
+• Parallelization 
+– Dimensions can be loaded concurrently 
+– Fact tables can be loaded concurrently 
+– Partitions can be loaded concurrently 
+15 
+
+--- PAGE 16 ---
+ETL Tools 
+• ETL tools from the big commercial vendors 
+– Oracle Warehouse Builder / Oracle Data Integrator 
+– IBM DB2 Warehouse Manager 
+– Microsoft Data Transformation Services 
+– Talend 
+– … 
+• Offers much functionality at a reasonable price (included…) 
+– Data modelling 
+– ETL code generation 
+– Scheduling DW jobs 
+– … 
+• Popular 
+– SQL 
+– Spark 
+– Airflow 
+16 
+
+--- PAGE 17 ---
+A Few Hints on ETL Design 
+• Do not try to implement all transformations in one step! 
+ 
+• Do one (or just a few) thing(s) at a time 
+– Copy source data to DSA (data staging area) 
+– Compute deltas 
+• Only if doing incremental load 
+• Handle versions and DW keys 
+– Versions only if handling slowly changing dimensions 
+• Implement complex transformations 
+• Load dimensions 
+• Load facts 
+17 
+
+--- PAGE 18 ---
+Example ETL pipeline 
+• This is an example for e-commerce loading 
+ 
+• Note multiple stages of filtering (using selection or join-like operations), logging 
+bad records, before we group and load 
+Invoice  
+line items 
+Split 
+Date - 
+time 
+Filter 
+invalid Join Filter 
+invalid 
+Invalid  
+dates / times 
+Invalid 
+items 
+Item 
+records 
+Filter 
+non - 
+match 
+Invalid 
+customers 
+Group by  
+customer 
+Customer 
+balance 
+Customer 
+records 
+18 
+
+--- PAGE 19 ---
+Example of Replacing fact record’s operational 
+natural keys with dimension 
+ 
+19 
+Optional 
+
+--- PAGE 20 ---
+MySQL LOAD DATA Statement 
+20 
+LOAD DATA 
+    [LOW_PRIORITY | CONCURRENT] [LOCAL] 
+    INFILE 'file_name' 
+    [REPLACE | IGNORE] 
+    INTO TABLE tbl_name 
+    [PARTITION (partition_name [, partition_name] ...)] 
+    [CHARACTER SET charset_name] 
+    [{FIELDS | COLUMNS} 
+        [TERMINATED BY 'string'] 
+        [[OPTIONALLY] ENCLOSED BY 'char'] 
+        [ESCAPED BY 'char'] 
+    ] 
+    [LINES 
+        [STARTING BY 'string'] 
+        [TERMINATED BY 'string'] 
+    ] 
+    [IGNORE number {LINES | ROWS}] 
+    [(col_name_or_user_var 
+        [, col_name_or_user_var] ...)] 
+    [SET col_name={expr | DEFAULT} 
+        [, col_name={expr | DEFAULT}] ...] 
+https://dev.mysql.com/doc/refman/8.0/en/load-data.html 
+ 
+
+--- PAGE 21 ---
+LOAD DATA example, table creation 
+21 
+CREATE TABLE dim_date ( 
+  date_key INT UNSIGNED NOT NULL AUTO_INCREMENT, 
+  date date, 
+  month_abbrev CHAR(3), 
+  year4 year, 
+  day_of_month TINYINT, 
+  day_of_yr SMALLINT, 
+  day_of_wk CHAR(3), 
+  wk_in_month TINYINT, 
+  wk_in_yr TINYINT, 
+  month_number TINYINT, 
+  yr_month CHAR(7), 
+  yr_month_abbrev CHAR(8), 
+  qtr_name CHAR(2), 
+  qtr_number TINYINT, 
+  year_qtr CHAR(7), 
+  PRIMARY KEY  (date_key) 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8; 
+
+--- PAGE 22 ---
+LOAD DATA example, load data 
+22 
+ 
+LOAD DATA LOCAL  INFILE 'C:/Users/wuwei/Documents/database_examples/sakila/ETL/dim_date.csv'  
+INTO TABLE dim_date  
+FIELDS TERMINATED BY ','  
+IGNORE 1 LINES 
+(`date`, month_abbrev, year4, day_of_month, day_of_yr, day_of_wk, wk_in_month, wk_in_yr, 
+month_number, yr_month, yr_month_abbrev, qtr_name, qtr_number, year_qtr) 
+SET date_key = NULL; 
+Note: MySQL workbench table data import wizard can also load data, but is very slow … 
+Note: date_key values will be auto generated because it’s an AUTO_INCREMENT column. 
+
+--- PAGE 23 ---
+Initial Full Load and Incremental Load 
+• Initial full load to capture all history up to date X 
+• Incremental load to capture the new data, scheduled to run every day or week 
+23 
+Operational 
+database Data Warehouse 
+Initial full 
+load 
+Incremental 
+Load 
+Captures all history up to date X 
+Run once 
+Captures changes after date X 
+Scheduled job 
+
+--- PAGE 24 ---
+ETL vs. ELT 
+• ETL (Extract, Transform, Load) 
+– Traditional approach. Data is gathered from sources, sent to a staging area where it is cleaned and 
+formatted, and then pushed into the destination (like a data warehouse). 
+• ELT (Extract, Load, Transform) 
+– Modern approach. Data is extracted and immediately dumped into a high-powered cloud warehouse (like 
+Snowflake or BigQuery). The transformation happens inside the warehouse using its own massive 
+computing power. 
+24 
+
+
+--- PAGE 25 ---
+Compare ETL and ELT 
+ETL ELT 
+Order Extract -> Transform -> Load Extract -> Load -> Transform 
+Complexity High (requires dedicated tools) Low (leverages SQL/Cloud) 
+Speed Slower (bottleneck at staging) Faster (parallel processing) 
+Cost High for hardware Low (pay-as-you-go cloud) 
+Maintenance High (rigid pipelines) Low (flexible/agile) 
+25 
+
+--- PAGE 26 ---
+ELT is getting more popular for new systems 
+(especially cloud-based) 
+• Cloud warehouses changed the game 
+Platforms like Snowflake, Google BigQuery, and Amazon Redshift have massive built-in 
+compute, so it makes sense to transform inside them.  
+• Storage is cheap 
+Keeping raw data is affordable, so teams load first and decide transformations later.  
+• Analytics teams want flexibility 
+Data analysts and analytics engineers can transform data with SQL later instead of waiting for 
+upstream ETL pipelines.  
+• Faster iteration 
+ELT supports agile experimentation—very useful for startups and modern data teams. 
+26 

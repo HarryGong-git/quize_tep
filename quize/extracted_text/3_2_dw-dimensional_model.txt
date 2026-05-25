@@ -1,0 +1,378 @@
+--- PAGE 1 ---
+Data Warehouse 
+Dimensional Model 
+
+--- PAGE 2 ---
+2 
+Data Warehouse Data Models 
+ Data Models 
+ dimensional model 
+ fact table 
+ dimension table 
+ star schema  
+ snowflakes schema 
+
+--- PAGE 3 ---
+3 
+Dimensional Data Model 
+ Measures - numerical (and additive) data being tracked in business, 
+can be analyzed and examined 
+ Dimensions - business parameters that define a transaction, 
+relatively static data such as lookup or reference tables 
+ Example: Analyst may want to view sales data (measure) by 
+geography, by time, and by product (dimensions) 
+
+--- PAGE 4 ---
+4 
+The Dimensional Model 
+“Sales by product line over the past six months” 
+“Sales by store between 2010 and 2015” 
+Prod Code Time Code  Store Code  Sales Qty  
+Store Info 
+Product Info 
+Time Info 
+. . . 
+Numerical Measures 
+Key columns joining fact table 
+to dimension tables 
+Fact table for  
+measures 
+Dimension tables 
+
+--- PAGE 5 ---
+5 
+Dimensional Modeling 
+ Dimensional modeling is a technique for structuring data around the 
+business concepts 
+ ER models describe “entities” and “relationships” 
+ Dimensional models describe “measures” and “dimensions” 
+ 
+
+--- PAGE 6 ---
+6 
+Dimensional Modeling 
+ Dimensions are organized into hierarchies 
+ E.g., Time dimension: days  weeks  quarters 
+ E.g., Product dimension: product  product line  brand 
+ Dimensions have attributes 
+          Time                  Store 
+Date 
+Month 
+Year 
+StoreID 
+City 
+State 
+Country 
+Region 
+
+--- PAGE 7 ---
+7 
+Dimension Hierarchies 
+Store Dimension Product Dimension 
+District 
+Region 
+Total 
+Brand 
+Manufacturer 
+Total 
+Stores Products 
+
+
+--- PAGE 8 ---
+8 
+Schema Design 
+ Most data warehouses use a star schema to represent multi-dimensional 
+model. 
+ Each dimension is represented by a dimension table that describes it. 
+ A fact table connects to all dimension tables with a multiple join. Each tuple 
+in the fact table consists of a pointer to each of the dimension tables that 
+provide its multi-dimensional coordinates and stores measures for those 
+coordinates. 
+ The links between the fact table in the center and the dimension tables in the 
+extremities form a shape like a star. 
+
+--- PAGE 9 ---
+9 
+Star Schema (in RDBMS) 
+
+
+--- PAGE 10 ---
+10 
+Star Schema Example 
+
+--- PAGE 11 ---
+11 
+Star Schema 
+with Sample 
+Data 
+
+--- PAGE 12 ---
+12 
+The “Classic” Star Schema 
+ A relational model with a one-to-many relationship between dimension table and fact 
+table. 
+ A single fact table, with detail and summary data 
+ Fact table primary key has only one key column per dimension 
+ Each dimension is a single table, highly denormalized 
+ Benefits: Easy to understand, intuitive mapping between the business entities, easy to define 
+hierarchies, reduces # of physical joins, low maintenance, very simple metadata 
+ Drawbacks: Summary data in the fact table yields poorer performance for summary levels, huge 
+dimension tables a problem 
+ 
+
+--- PAGE 13 ---
+13 
+Need for Aggregates 
+ Sizes of typical tables: 
+ Time dimension: 5 years x 365 days = 1825 
+ Store dimension: 300 stores reporting daily sales 
+ Production dimension: 40,000 products in each store (about 4000 sell in 
+each store daily) 
+ Maximum number of base fact table records: 2 billion (lowest level of 
+detail) 
+ A query involving 1 brand, all store, 1 year: retrieve/summarize over 7 
+million fact table rows. 
+
+--- PAGE 14 ---
+14 
+Aggregating Fact Tables 
+ Aggregate fact tables are summaries of the most granular data at higher 
+levels along the dimension hierarchies. 
+Product key 
+Time key 
+Store key 
+Unit sales 
+Sale dollars 
+Product key 
+Product 
+Category 
+Department 
+Store key 
+Store name 
+Territory 
+Region 
+Time key 
+Date Month 
+Quarter 
+Year 
+Multi-way aggregates: 
+Territory – Category – Month 
+    (Data values at higher level) 
+
+--- PAGE 15 ---
+15 
+Aggregate Fact Tables 
+Product key 
+Time key 
+Store key 
+Unit sales 
+Sale dollars 
+Category key 
+Time key 
+Store key 
+Unit sales 
+Sales dollars 
+Product key 
+Product 
+Category 
+Department 
+Time key 
+Date  
+Month 
+Quarter 
+Year 
+Store key 
+Store name 
+Territory 
+Region 
+Category key 
+Category 
+Department 
+Base table 
+Sales facts 
+Store Product 
+Time One-way aggregate 
+Sale facts 
+Dimension 
+Derived from Product 
+Category 
+
+--- PAGE 16 ---
+16 
+Families of Stars 
+ 
+Dimension 
+table 
+Fact table 
+Fact table 
+Fact table 
+Dimension 
+table 
+Dimension  
+table 
+Dimension 
+table 
+Dimension 
+table 
+Dimension 
+table 
+Dimension 
+table Dimension 
+table 
+
+--- PAGE 17 ---
+17 
+Snowflake Schema 
+ Snowflake schema is a type of star schema but a more complex 
+model. 
+ “Snowflaking” is a method of normalizing the dimension tables in a 
+star schema. 
+ The normalization eliminates redundancy. 
+ The result is more complex queries and reduced query performance. 
+
+--- PAGE 18 ---
+ 
+18 
+
+
+--- PAGE 19 ---
+ 
+19 
+
+
+--- PAGE 20 ---
+Query Example on SnowFlake Schema 
+20 
+SELECT 
+ B.Brand, 
+ G.Country, 
+ SUM(F.Units_Sold) 
+FROM Fact_Sales F 
+INNER JOIN Dim_Date D             ON F.Date_Id = D.Id 
+INNER JOIN Dim_Store S            ON F.Store_Id = S.Id 
+INNER JOIN Dim_Geography G        ON S.Geography_Id = G.Id 
+INNER JOIN Dim_Product P          ON F.Product_Id = P.Id 
+INNER JOIN Dim_Brand B            ON P.Brand_Id = B.Id 
+INNER JOIN Dim_Product_Category C ON P.Product_Category_Id = C.Id 
+WHERE 
+ D.Year = 1997 AND 
+ C.Product_Category = 'tv' 
+GROUP BY 
+ B.Brand, 
+ G.Country 
+
+--- PAGE 21 ---
+21 
+Sales: Snowflake Schema 
+Salesrep key 
+Salesperson name 
+Territory key 
+Product key 
+Time key 
+Customer key 
+…. 
+Product key 
+Product name 
+Product code 
+Brand key 
+Brand key 
+Brand name 
+Category key 
+Category key 
+Product category 
+Territory key 
+Territory name 
+Region key 
+Region key 
+Region name 
+Sales fact 
+Product 
+Salesrep 
+
+--- PAGE 22 ---
+22 
+Snowflaking 
+ The attributes with low cardinality in each original 
+dimension table are removed to form separate tables.  
+ These new tables are linked back to the original 
+dimension table through artificial keys.  
+Product key 
+Product name 
+Product code 
+Brand key 
+Brand key 
+Brand name 
+Category key 
+Category key 
+Product category 
+
+--- PAGE 23 ---
+23 
+Snowflake Schema 
+ Advantages: 
+ Small saving in storage space 
+ Normalized structures are easier to update and maintain 
+ Disadvantages: 
+ Schema less intuitive and end-users are put off by the 
+complexity 
+ Ability to browse through the contents difficult 
+ Degrade query performance because of additional joins 
+
+--- PAGE 24 ---
+24 
+What is the Best Design? 
+ Performance benchmarking can be used to determine what is the 
+best design. 
+ Snowflake schema: easier to maintain dimension tables when 
+dimension tables are very large (reduce overall space). It is not 
+generally recommended in a data warehouse environment. 
+ Star schema: more effective for data cube browsing (less joins): can 
+affect performance. Recommended design. 
+
+--- PAGE 25 ---
+Identify the Grain 
+ We must specify exactly what a fact table record means. The grain conveys 
+the level of detail associated with the fact table measurements.  
+ Identifying the grain means deciding on the level of detail you want to be 
+made available in the dimensional model. 
+ The level of detail available in a star schema (dimensional model) is referred 
+to as the grain. 
+ Each fact and dimension table is said to have its own grain or granularity. 
+ 
+ Choosing the right grain is the most important step for designing the 
+dimensional model. 
+25 
+
+--- PAGE 26 ---
+Examples of grain definitions 
+ A line item on a grocery receipt 
+ A single item on an invoice 
+ A single item on a restaurant bill 
+ A line item on a bill received by a hospital 
+ A single airline ticket purchased on a day 
+ A single bus ticket purchased on a day 
+ A weekly snapshot of the number of products in the warehouse inventory 
+ A monthly snapshot of a bank account statement 
+ 
+26 
+
+--- PAGE 27 ---
+Example 
+ 
+27 
+
+
+--- PAGE 28 ---
+Handle Multiple Grains 
+ There can be more than one grain definition associated with a single business 
+process.  
+ Separate fact tables with separate grains should be used to handle such situation. 
+ Example: daily, monthly, and yearly tables 
+ Consider the amount of data, space, and the performance requirements when you 
+decide how to handle multiple granularities. 
+ 
+ It is possible to have multiple grains in one fact table, by adding a column called 
+the granularity flag. Such a column would indicate whether the data or row in the 
+fact table is at the daily, monthly, quarterly, or yearly level.  
+ However, this is not a good design. 
+28 
